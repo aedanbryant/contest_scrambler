@@ -39,8 +39,8 @@ class AbstractRandomStateScramblerTwipsCLI():
 		
 		return scramble
 
-	def solve_scramble(self, scramble: str):
-		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, 0, False)
+	def solve_scramble(self, scramble: str, random_start: bool = False, max_depth = None):
+		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, 0, random_start, max_depth)
 		return self.twips.parse_search_moves(solution)
 
 	def pad_scramble(self, solution, padding):
@@ -57,8 +57,10 @@ class AbstractRandomStateScramblerTwipsCLI():
 				scramble_length += 1
 				loop_count = 0
 
-			scrambles = self.twips.solve_scramble(self.puzzle_file, padded_solution, self.generator_moves, 20, scramble_length, True)
+			scrambles = self.twips.solve_scramble(self.puzzle_file, padded_solution, self.generator_moves, 1000, scramble_length, True, scramble_length)
 			scrambles = self.twips.parse_search_algs(scrambles)
+
+			random.shuffle(scrambles)
 
 			for scramble in scrambles:
 				if scramble[0] == "F" or scramble[-1] == "R" or scramble[-2] == "R":
@@ -116,10 +118,10 @@ class AbstractRandomMoveScrambler():
 			# Get random move and ensure it doesn't cancel with previous move
 			while True:
 				move_index = random.randint(0, len(self.move_types[modifier_type_index][axis_index]) - 1)
-				if move_index not in last_axis_moves:
+				if self.move_types[modifier_type_index][axis_index][move_index] not in last_axis_moves:
 					break
 			
-			last_axis_moves.append(move_index)
+			last_axis_moves.append(self.move_types[modifier_type_index][axis_index][move_index])
 
 			modifier_index = random.randint(0, len(self.modifiers[modifier_type_index]) - 1)
 

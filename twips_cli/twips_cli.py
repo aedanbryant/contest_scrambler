@@ -17,7 +17,7 @@ class Twips():
 	def parse_movecount(self, alg: str):
 		return alg.strip().count(" ") + 1
 
-	def state_scramble(self, puzzle_file: str, state_file: str, min_depth: int, generator_moves: str, min_solutions: int):
+	def state_scramble(self, puzzle_file: str, state_file: str, min_depth: int, generator_moves: str, min_solutions: int, max_depth = None):
 		command = [
 			self.twips_name,
 			"search",
@@ -29,11 +29,15 @@ class Twips():
 			puzzle_file
 		]
 
+		if max_depth != None:
+			command.append("--max-depth")
+			command.append(str(max_depth + 1))
+
 		output = subprocess.run(command, capture_output=True, text=True)
 
 		return output.stdout
 
-	def solve_scramble(self, puzzle_file: str, scramble: str, generator_moves: str, min_solutions: int, min_depth: int = 0, random_start: bool = False):
+	def solve_scramble(self, puzzle_file: str, scramble: str, generator_moves: str, min_solutions: int, min_depth: int = 0, random_start: bool = False, max_depth = None):
 		command = [
 			self.twips_name,
 			"search",
@@ -44,8 +48,13 @@ class Twips():
 			puzzle_file
 		]
 
-		if random_start == True:
-			command.append("--random-start")
+		if max_depth != None:
+			command.append("--max-depth")
+			command.append(str(max_depth + 1))
+
+		# Doesn't work in current version
+		# if random_start == True:
+		# 	command.append("--random-start")
 
 		output = subprocess.run(command, capture_output=True, text=True)
 
