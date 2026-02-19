@@ -22,13 +22,13 @@ class AbstractRandomStateEvent(AbstractRandomStateScramblerTwipsCLI):
         event_scrambles = {}
         
         for i in range(num_rounds):
-            event_scrambles[f"Round {i+1}"] = {"Scrambles": {}, "Extras": {}}        
+            event_scrambles[f"Round {i+1}"] = {"Scrambles": {}}        
             
             for j in range(self.num_scrambles):
-                event_scrambles[f"Round {i+1}"]["Scrambles"][j+1] = self.scramble()
+                event_scrambles[f"Round {i+1}"]["Scrambles"][str(j+1)] = self.scramble()
             
             for j in range(self.num_extras):
-                event_scrambles[f"Round {i+1}"]["Extras"][j+1] = self.scramble()
+                event_scrambles[f"Round {i+1}"]["Scrambles"][f"E{j+1}"] = self.scramble()
 
         with open(output_file, "w") as f:
             json.dump(event_scrambles, f, indent=4)
@@ -51,13 +51,13 @@ class AbstractRandomMoveEvent():
         event_scrambles = {}
         
         for i in range(num_rounds):
-            event_scrambles[f"Round {i+1}"] = {"Scrambles": {}, "Extras": {}}        
+            event_scrambles[f"Round {i+1}"] = {"Scrambles": {}}        
             
             for j in range(self.num_scrambles):
-                event_scrambles[f"Round {i+1}"]["Scrambles"][j+1] = self.scramble()
+                event_scrambles[f"Round {i+1}"]["Scrambles"][str(j+1)] = self.scramble()
             
             for j in range(self.num_extras):
-                event_scrambles[f"Round {i+1}"]["Extras"][j+1] = self.scramble()
+                event_scrambles[f"Round {i+1}"]["Scrambles"][f"E{j+1}"] = self.scramble()
 
         with open(output_file, "w") as f:
             json.dump(event_scrambles, f, indent=4)
