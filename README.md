@@ -9,10 +9,10 @@ Options:
 
 Events currently supported:
 
-Event Name | Event ID | Random State | Min Optimal | Scramble Length | Padding
--------------------------------------------------------------------------------
-2x2x2 Fewest Moves | 222fm | Yes | 7 | 17 | R' U' F
-Master Face-Turning Octahedron | mfto | No | N/A | N/A | None
+| Event Name | Event ID | Random State | Min Optimal | Scramble Length | Padding |
+| -----------|----------|--------------|-------------|-----------------|---------|
+| 2x2x2 Fewest Moves | 222fm | Yes | 7 | 17 | R' U' F |
+| Master Face-Turning Octahedron | mfto | No | N/A | N/A | None |
 
 
 
