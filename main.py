@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import optparse
 
-from events import Cube2x2x2FewestMoves, Octahedron4x4x4Speedsolving
+from events import *
 
 
 def main():
@@ -9,8 +9,10 @@ def main():
     state_file = "patterns/scramble-pattern.json"
 
     event_names = [
+        "clock",
         "222fm",
-        "mfto"
+        "mfto",
+        "pyra_clock"
     ]
 
 
@@ -35,13 +37,18 @@ def main():
 
 
     match(options.event):
+        case "clock":
+            event_scrambler = ClockSpeedsolving()
         case "222fm":
             event_scrambler = Cube2x2x2FewestMoves(twips_name, state_file)
         case "mfto":
             event_scrambler = Octahedron4x4x4Speedsolving()
+        case "pyra_clock":
+            event_scrambler = PyraminxClockSpeedsolving()
 
 
-    event_scrambler.scramble_rounds("Not Currently Used", options.rounds, options.output_file)
+    event_scrambler.scramble_rounds(options.rounds, options.output_file)
+    # event_scrambler.scramble_rounds(options.rounds, )
 
 
 if __name__ == "__main__":

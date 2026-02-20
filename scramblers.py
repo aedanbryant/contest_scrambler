@@ -6,7 +6,7 @@ from twips_cli.kpuzzle import KPuzzle
 
 
 
-class AbstractRandomStateScramblerTwipsCLI():
+class AbstractRandomStateScramblerTwipsCLI(ABC):
 	def __init__(self, twips_name: str, puzzle_file: str, state_file: str, generator_moves: str, min_scramble_length: int, min_optimal_filter: int):
 
 		self.puzzle_file = puzzle_file
@@ -128,3 +128,27 @@ class AbstractRandomMoveScrambler():
 			scramble += f"{self.move_types[modifier_type_index][axis_index][move_index]}{self.modifiers[modifier_type_index][modifier_index]} "
 		
 		return scramble[:-1]
+
+
+class AbstractClockScrambler():
+	def __init__(self, movelist: list[str], hours: int):
+		self.movelist = movelist
+		self.hours = hours
+
+	def generate_scramble(self):
+		
+		scramble = ""
+
+		for move in self.movelist:
+			if move == "y2":
+				scramble += "y2 "
+				continue
+
+			amount = random.randint(0, self.hours - 1)
+
+			abs_amount = abs(amount - (self.hours // 2))
+			sign = "-" if (amount - (self.hours // 2)) < 0 else "+"
+
+			scramble += f"{move}{abs_amount}{sign} "
+
+		return scramble.strip()
