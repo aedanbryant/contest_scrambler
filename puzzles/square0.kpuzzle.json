@@ -1,0 +1,81 @@
+{
+  "name": "square0",
+  "orbits": [
+    {
+      "orbitName": "CORNERS",
+      "numPieces": 8,
+      "numOrientations": 1
+    },
+    {
+      "orbitName": "EQUATOR",
+      "numPieces": 1,
+      "numOrientations": 2
+    }
+  ],
+  "defaultPattern": {
+    "CORNERS": {
+      "pieces": [0, 1, 2, 3, 4, 5, 6, 7],
+      "orientation": [0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    "EQUATOR": {
+      "pieces": [0],
+      "orientation": [0]
+    }
+  },
+  "moves": {
+    "U": {
+      "CORNERS": {
+        "permutation": [1, 2, 3, 0, 4, 5, 6, 7],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "EQUATOR": {
+        "permutation": [0],
+        "orientationDelta": [0]
+      }
+    },
+    "R": {
+      "CORNERS": {
+        "permutation": [7, 4, 2, 3, 1, 5, 6, 0],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "EQUATOR": {
+        "permutation": [0],
+        "orientationDelta": [1]
+      }
+    },
+    "D": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3, 5, 6, 7, 4],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "EQUATOR": {
+        "permutation": [0],
+        "orientationDelta": [0]
+      }
+    }
+  },
+  "derivedMoves": {
+    "U_D": "U D",
+    "U_Di": "U D'",
+    "U_DD": "U D2",
+    "Ui_D": "U' D",
+    "Ui_Di": "U' D'",
+    "Ui_DD": "U' D2",
+    "UU_D": "U2 D",
+    "UU_Di": "U2 D'",
+    "UU_DD": "U2 D2",
+    "UU": "U2",
+    "DD": "D2",
+    "U_D_R": "U D R",
+    "U_Di_R": "U D' R",
+    "U_DD_R": "U D2 R",
+    "Ui_D_R": "U' D R",
+    "Ui_Di_R": "U' D' R",
+    "Ui_DD_R": "U' D2 R",
+    "UU_D_R": "U2 D R",
+    "UU_Di_R": "U2 D' R",
+    "UU_DD_R": "U2 D2 R",
+    "UU_R": "U2 R",
+    "DD_R": "D2 R"
+  }
+}

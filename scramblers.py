@@ -24,11 +24,11 @@ class AbstractRandomStateScramblerTwipsCLI(ABC):
 	def gen_random_state(self):
 		pass
 
-	def gen_scramble(self):
+	def gen_scramble(self, extra_params = None):
 		while True:
 			self.gen_random_state()
 
-			scramble = self.twips.state_scramble(self.puzzle_file, self.state_file, self.min_scramble_length, self.generator_moves, 1)
+			scramble = self.twips.state_scramble(self.puzzle_file, self.state_file, self.min_scramble_length, self.generator_moves, min_solutions=1, extra_params=extra_params)
 			scramble = self.twips.parse_search_moves(scramble)
 
 			solutions = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1)

@@ -70,7 +70,7 @@ class KPuzzle():
 
 		return pieces
 
-	def scramble_orbit_orientation(self, orbit_name: str, orientation_constraint: bool, fixed_index=None):
+	def scramble_orbit_orientation(self, orbit_name: str, orientation_constraint: bool, fixed_index=None, custom_orientation_constraint=None):
 		orientation = self.default_orientations[orbit_name].copy()
 		num_orientations = self.num_orientations[orbit_name]
 		max_orientation = num_orientations - 1
@@ -89,6 +89,8 @@ class KPuzzle():
 
 		if orientation_constraint == False:
 			orientation[last_piece_index] = random.randint(0, max_orientation)
+		elif custom_orientation_constraint != None:
+			orientation[last_piece_index] = (num_orientations - ((orientation_count + custom_orientation_constraint) % num_orientations)) % num_orientations
 		else:
 			orientation[last_piece_index] = (num_orientations - (orientation_count % num_orientations)) % num_orientations
 

@@ -13,8 +13,14 @@ Events currently supported:
 | -----------|----------|--------------|-------------|-----------------|---------|
 | 2x2x2 Fewest Moves | 222fm | Yes | 7 | 17 | R' U' F |
 | Master Face-Turning Octahedron | mfto | No | N/A | N/A | None |
+| 1x3x3 | 133_cuboid | Yes | TBD | TBD | None |
+| 2x2x3 | 223_cuboid | Yes | TBD | TDB | None |
+| 2x3x3 | 233_cuboid | Yes | TBD | TDB | None |
+| 2-layer Pentahedron | 2pentahedron | Yes | TBD | TBD | None |
+| 3-layer Pentahedron | 3pentahedron | Yes | TBD | TBD | None |
+| Square-0 | sq0 | Yes | TBD | TBD | None |
 
-
+Square-0 is slow
 
 Events to add:
 - 2x2 BLD (random orientation)
@@ -30,13 +36,9 @@ Events to add:
 - Pyraminx Duo (To add our own movecount cutoff)
 - Super Pentagonal Clock
 - Pentagonal Clock (New Style)
-- 1x3x3 (To add our own movecount cutoff)
 - Super 1x3x3 (To add our own movecount cutoff)
-- 2x2x3 (To add our own movecount cutoff)
-- 2x3x3 (To add our own movecount cutoff)
 - 3x3x4
 - Rainbow Ball (IDK how to make kpuzzle def for this)
-- Square-0
 
 
 Future Ideas:

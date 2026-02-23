@@ -1,0 +1,72 @@
+{
+  "name": "2x2x3",
+  "orbits": [
+    {
+      "orbitName": "CORNERS",
+      "numPieces": 8,
+      "numOrientations": 1
+    },
+    {
+      "orbitName": "E_EDGES",
+      "numPieces": 4,
+      "numOrientations": 1
+    }
+  ],
+  "defaultPattern": {
+    "CORNERS": {
+      "pieces": [0, 1, 2, 3, 4, 5, 6, 7],
+      "orientation": [0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    "E_EDGES": {
+      "pieces": [0, 1, 2, 3],
+      "orientation": [0, 0, 0, 0]
+    }
+  },
+  "moves": {
+    "U": {
+      "CORNERS": {
+        "permutation": [1, 2, 3, 0, 4, 5, 6, 7],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "E_EDGES": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 0, 0, 0, 0, 0]
+      }
+    },
+    "y": {
+      "CORNERS": {
+        "permutation": [1, 2, 3, 0, 7, 4, 5, 6],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "E_EDGES": {
+        "permutation": [1, 2, 3, 0],
+        "orientationDelta": [0, 0, 0, 0]
+      }
+    },
+    "L": {
+      "CORNERS": {
+        "permutation": [0, 1, 5, 6, 4, 2, 3, 7],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "E_EDGES": {
+        "permutation": [3, 1, 2, 0],
+        "orientationDelta": [0, 0, 0, 0]
+      }
+    },
+    "D": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3, 5, 6, 7, 4],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "E_EDGES": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 0, 0, 0]
+      }
+    }
+  },
+  "derivedMoves": {
+    "F": "y L y'",
+    "R": "y2 L y2",
+    "B": "y' L y"
+  }
+}
