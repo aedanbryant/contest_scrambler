@@ -4,36 +4,7 @@ import json
 from scramblers import AbstractRandomMoveScrambler, AbstractRandomStateScramblerTwipsCLI, AbstractClockScrambler
 
 cuboid_move_substitutions = {"L": "L2", "F": "F2", "R": "R2", "B": "B2"}
-square0_move_substitutions = {"R": "/",
-                            "Ui_Di'": "(3,3)",
-                            "UU_Di'": "(6,3)",
-                            "U_Di'": "(-3,3)",
-                            "Ui_DD'": "(3,6)",
-                            "UU_DD'": "(6,6)",
-                            "U_DD'": "(-3,6)",
-                            "Ui_D'": "(3,-3)",
-                            "UU_D'": "(6,-3)",
-                            "U_D'": "(-3,-3)",
-                            "UU'": "(6,0)",
-                            "DD'": "(0,6)",
-                            "U'": "(-3,0)",
-                            "D'": "(0,-3)",
-                            "Ui_Di": "(-3,-3)",
-                            "UU_Di": "(6,-3)",
-                            "U_Di": "(3,-3)",
-                            "Ui_DD": "(-3,6)",
-                            "UU_DD": "(6,6)",
-                            "U_DD": "(3,6)",
-                            "Ui_D": "(-3,3)",
-                            "UU_D": "(6,3)",
-                            "U_D": "(3,3)",
-                            "UU": "(6,0)",
-                            "U2": "(6,0)",
-                            "DD": "(0,6)",
-                            "D2": "(0,6)",
-                            "U": "(3,0)",
-                            "D": "(0,3)"
-}
+square0_move_substitutions = {"R": "/","UU_DD'": "(6,6)","U_DD'": "(-3,6)","Ui_D'": "(3,-3)","UU_D'": "(6,-3)","U_D'": "(-3,-3)","UU'": "(6,0)","DD'": "(0,6)","U'": "(-3,0)","D'": "(0,-3)","UU_DD": "(6,6)","U_DD": "(3,6)","Ui_D": "(-3,3)","UU_D": "(6,3)","U_D": "(3,3)","UU": "(6,0)","U2": "(6,0)","DD": "(0,6)","D2": "(0,6)","U": "(3,0)","D": "(0,3)"}
 
 def scramble_move_substitution(scramble: str, move_substitutions: dict):
     for move in move_substitutions:
@@ -217,7 +188,7 @@ class Square0Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRou
         self.num_scrambles = 5
         self.num_extras = 2
 
-        super().__init__(twips_name, "puzzles/square0.kpuzzle.json", state_file, "U,D,R,U_D,U_Di,U_DD,Ui_D,Ui_Di,Ui_DD,UU_D,UU_Di,UU_DD,UU,DD", min_scramble_length=0, min_optimal_filter=0)
+        super().__init__(twips_name, "puzzles/square0.kpuzzle.json", state_file, "U,D,R,U_D,Ui_D,U_DD,UU_D,UU_DD,UU,DD", min_scramble_length=0, min_optimal_filter=0)
 
     def gen_random_state(self):
         self.kpuzzle.state_pieces["CORNERS"] = self.kpuzzle.scramble_orbit_pieces("CORNERS", parity_constraint=None, fixed_index=None)

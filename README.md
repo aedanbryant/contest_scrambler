@@ -20,7 +20,6 @@ Events currently supported:
 | 3-layer Pentahedron | 3pentahedron | Yes | TBD | TBD | None |
 | Square-0 | sq0 | Yes | TBD | TBD | None |
 
-Square-0 is slow
 
 Events to add:
 - 2x2 BLD (random orientation)
@@ -29,7 +28,6 @@ Events to add:
 - 3x3 with supercube centers
 - 8x8+
 - Master Kilominx+
-- 2 & 3 layer pentahedrons
 - CTO
 - Dino Cube (To add our own movecount cutoff)
 - Ivy Cube (To add our own movecount cutoff)
