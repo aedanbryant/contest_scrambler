@@ -44,5 +44,3 @@ Future Ideas:
 - Scramble Images
 - Twips python library
 - Multiphase solving
-
-U_PLUS_,R_PLUS_,ALL_PLUS_,BU_PLUS_,BR_PLUS_,BALL_PLUS_,DR_PLUS_,DL_PLUS_,D_PLUS_,L_PLUS_,BDR_PLUS_,BDL_PLUS_,BD_PLUS_,BL_PLUS_
