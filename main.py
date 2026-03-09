@@ -8,19 +8,6 @@ def main():
     twips_name = "./twips_cli/twips"
     state_file = "patterns/scramble-pattern.json"
 
-    # event_names = [
-    #     "clock",
-    #     "222fm",
-    #     "mfto",
-    #     "pyra_clock",
-    #     "133_cuboid",
-    #     "223_cuboid",
-    #     "233_cuboid",
-    #     "2pentahedron",
-    #     "3pentahedron",
-    #     "sq0"
-    # ]
-
 
     parser = optparse.OptionParser()
 
@@ -36,10 +23,6 @@ def main():
 
     (options, args) = parser.parse_args()
 
-
-    # if not (options.event in event_names):
-    #     print(f"Invalid EventID: \"{options.event}\"")
-    #     return
 
 
     match(options.event):
@@ -63,6 +46,8 @@ def main():
             event_scrambler = Pentahedron3x3Speedsolving(twips_name, state_file)
         case "sq0":
             event_scrambler = Square0Speedsolving(twips_name, state_file)
+        case "super_133":
+            event_scrambler = SuperFloppySpeedsolving(twips_name, state_file)
         case _:
             print(f"Invalid EventID: \"{options.event}\"")
             return

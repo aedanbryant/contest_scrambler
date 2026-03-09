@@ -1,0 +1,71 @@
+{
+  "name": "clock",
+  "orbits": [
+    {
+      "orbitName": "DIALS",
+      "numPieces": 9,
+      "numOrientations": 12
+    }
+  ],
+  "defaultPattern": {
+    "DIALS": {
+      "pieces": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      "orientation": [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    }
+  },
+  "moves": {
+    "U": {
+      "DIALS": {
+        "permutation": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "orientationDelta": [1, 1, 1, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    "R": {
+      "DIALS": {
+        "permutation": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "orientationDelta": [1, 1, 1, 0, 1, 1, 0, 0, 0]
+      }
+    },
+    "ALL": {
+      "DIALS": {
+        "permutation": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "orientationDelta": [1, 1, 1, 1, 1, 1, 0, 0, 0]
+      }
+    },
+    "BU": {
+      "DIALS": {
+        "permutation": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "orientationDelta": [11, 0, 0, 0, 0, 0, 1, 1, 0]
+      }
+    },
+    "BR": {
+      "DIALS": {
+        "permutation": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "orientationDelta": [11, 0, 0, 11, 0, 0, 1, 1, 1]
+      }
+    },
+    "BALL": {
+      "DIALS": {
+        "permutation": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        "orientationDelta": [11, 0, 0, 11, 0, 11, 1, 1, 1]
+      }
+    },
+    "z": {
+      "DIALS": {
+        "permutation": [3, 4, 1, 5, 2, 0, 7, 8, 6],
+        "orientationDelta": [3, 3, 3, 3, 3, 3, 9, 9, 9]
+      }
+    }
+  },
+  "derivedMoves": {
+    "DR": "[z': U]",
+    "DL": "[z: U]",
+    "D": "[z': R]",
+    "L": "[z: R]",
+    "BDR": "[z: BU]",
+    "BDL": "[z': BU]",
+    "BD": "[z: BR]",
+    "BL": "[z': BR]"
+
+  }
+}

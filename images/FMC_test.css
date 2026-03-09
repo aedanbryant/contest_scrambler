@@ -1,0 +1,59 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+
+	display: grid;
+	place-content: center;
+}
+.main {
+	margin: 1em;
+	display: grid;
+	gap: 0.5em;
+}
+
+h1 {
+	font-family: Ubuntu, sans-serif;
+	text-align: center;
+}
+
+h2 {
+	font-family: Ubuntu, sans-serif;
+	text-align: center;
+}
+
+h3 {
+	font-family: Ubuntu, sans-serif;
+	text-align: left;
+}
+
+twisty-player {
+	place-self: center;
+	padding: 1em;
+}
+
+/* twisty-player {
+  min-width: 1.25in;
+  max-width: 2in;
+  width: auto;
+  height: 1.2in;
+}
+
+twisty-player.dim {
+  opacity: 0.1;
+} */
+
+@media print {
+	.main {
+		margin-bottom: 0;
+	}
+	.header input::placeholder {
+		opacity: 0;
+	}
+	select,
+	input {
+		border: none;
+	}
+}
+

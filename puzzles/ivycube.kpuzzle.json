@@ -1,0 +1,67 @@
+{
+  "name": "Ivy Cube",
+  "orbits": [
+    {
+      "orbitName": "CORNERS",
+      "numPieces": 4,
+      "numOrientations": 3
+    },
+    {
+      "orbitName": "EDGES",
+      "numPieces": 6,
+      "numOrientations": 1
+    }
+  ],
+  "defaultPattern": {
+    "CORNERS": {
+      "pieces": [0, 1, 2, 3],
+      "orientation": [0, 0, 0, 0]
+    },
+    "EDGES": {
+      "pieces": [0, 1, 2, 3, 4, 5],
+      "orientation": [0, 0, 0, 0, 0, 0]
+    }
+  },
+  "moves": {
+    "R": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [1, 0, 0, 0]
+      },
+      "EDGES": {
+        "permutation": [3, 1, 2, 4, 0, 5],
+        "orientationDelta": [0, 0, 0, 0, 0, 0]
+      }
+    },
+    "L": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 1, 0, 0]
+      },
+      "EDGES": {
+        "permutation": [1, 2, 0, 3, 4, 5],
+        "orientationDelta": [0, 0, 0, 0, 0, 0]
+      }
+    },
+    "B": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 0, 1, 0]
+      },
+      "EDGES": {
+        "permutation": [0, 4, 2, 3, 5, 1],
+        "orientationDelta": [0, 0, 0, 0, 0, 0]
+      }
+    },
+    "D": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 0, 0, 1]
+      },
+      "EDGES": {
+        "permutation": [0, 1, 5, 2, 4, 3],
+        "orientationDelta": [0, 0, 0, 0, 0, 0]
+      }
+    }
+  }
+}

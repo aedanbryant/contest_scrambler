@@ -70,6 +70,8 @@ class Twips():
 			command.append("--max-depth")
 			command.append(str(max_depth + 1))
 
+		# print_command_debug(command)
+
 		# Doesn't work in current version
 		# if random_start == True:
 		# 	command.append("--random-start")

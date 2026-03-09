@@ -1,0 +1,75 @@
+{
+  "name": "clock",
+  "orbits": [
+    {
+      "orbitName": "DIALS",
+      "numPieces": 18,
+      "numOrientations": 12
+    }
+  ],
+  "defaultPattern": {
+    "DIALS": {
+      "pieces": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+      "orientation": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    }
+  },
+  "moves": {
+    "UL_PLUS_": {
+      "DIALS": {
+        "permutation": [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+        ],
+        "orientationDelta": [
+          1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    "U_PLUS_": {
+      "DIALS": {
+        "permutation": [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+        ],
+        "orientationDelta": [
+          1, 1, 1, 1, 1, 1, 0, 0, 0, 11, 0, 11, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    "ALL_PLUS_": {
+      "DIALS": {
+        "permutation": [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+        ],
+        "orientationDelta": [
+          1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 0, 11, 0, 0, 0, 11, 0, 11
+        ]
+      }
+    },
+    "z": {
+      "DIALS": {
+        "permutation": [
+          6, 3, 0, 7, 4, 1, 8, 5, 2, 11, 14, 17, 10, 13, 16, 9, 12, 15
+        ],
+        "orientationDelta": [
+          3, 3, 3, 3, 3, 3, 3, 3, 3, 9, 9, 9, 9, 9, 9, 9, 9, 9
+        ]
+      }
+    }
+  },
+  "derivedMoves": {
+    "R_PLUS_": "[z': U_PLUS_]",
+    "D_PLUS_": "[z2: U_PLUS_]",
+    "L_PLUS_": "[z: U_PLUS_]",
+
+    "UR_PLUS_": "[z': UL_PLUS_]",
+    "DR_PLUS_": "[z2: UL_PLUS_]",
+    "DL_PLUS_": "[z: UL_PLUS_]",
+
+    "ULw_PLUS_": "U_PLUS_ L_PLUS_ UL_PLUS_'",
+    "URw_PLUS_": "U_PLUS_ R_PLUS_ UR_PLUS_'",
+    "DLw_PLUS_": "D_PLUS_ L_PLUS_ DL_PLUS_'",
+    "DRw_PLUS_": "D_PLUS_ R_PLUS_ DR_PLUS_'",
+
+    "MUL_PLUS_": "UR_PLUS_' DL_PLUS_' U_PLUS_ R_PLUS_ D_PLUS_ L_PLUS_ ALL_PLUS_'",
+    "MUR_PLUS_": "UL_PLUS_' DR_PLUS_' U_PLUS_ L_PLUS_ D_PLUS_ R_PLUS_ ALL_PLUS_'"
+  }
+}

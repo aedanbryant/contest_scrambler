@@ -1,0 +1,89 @@
+{
+  "name": "corner-turning octahedron",
+  "orbits": [
+    {
+      "orbitName": "EDGES",
+      "numPieces": 12,
+      "numOrientations": 2
+    },
+    {
+      "orbitName": "CENTERS",
+      "numPieces": 6,
+      "numOrientations": 4
+    }
+  ],
+  "defaultPattern": {
+    "EDGES": {
+      "pieces": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      "orientation": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    "CENTERS": {
+      "pieces": [0, 1, 2, 3, 4, 5],
+      "orientation": [0, 0, 0, 0, 0, 0]
+    }
+  },
+  "moves": {
+    "U": {
+      "EDGES": {
+        "permutation": [1, 2, 3, 0, 4, 5, 6, 7, 8, 9, 10, 11],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "CENTERS": {
+        "permutation": [0, 1, 2, 3, 4, 5],
+        "orientationDelta": [1, 0, 0, 0, 0, 0]
+      }
+    },
+    "L": {
+      "EDGES": {
+        "permutation": [0, 1, 2, 11, 4, 5, 6, 9, 8, 3, 10, 7],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "CENTERS": {
+        "permutation": [0, 1, 2, 3, 4, 5],
+        "orientationDelta": [0, 1, 0, 0, 0, 0]
+      }
+    },
+    "F": {
+      "EDGES": {
+        "permutation": [9, 1, 2, 3, 8, 5, 6, 7, 0, 4, 10, 11],
+        "orientationDelta": [1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0]
+      },
+      "CENTERS": {
+        "permutation": [0, 1, 2, 3, 4, 5],
+        "orientationDelta": [0, 0, 1, 0, 0, 0]
+      }
+    },
+    "R": {
+      "EDGES": {
+        "permutation": [0, 8, 2, 3, 4, 10, 6, 7, 5, 9, 1, 11],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "CENTERS": {
+        "permutation": [0, 1, 2, 3, 4, 5],
+        "orientationDelta": [0, 0, 0, 1, 0, 0]
+      }
+    },
+    "B": {
+      "EDGES": {
+        "permutation": [0, 1, 10, 3, 4, 5, 11, 7, 8, 9, 6, 2],
+        "orientationDelta": [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1]
+      },
+      "CENTERS": {
+        "permutation": [0, 1, 2, 3, 4, 5],
+        "orientationDelta": [0, 0, 0, 0, 1, 0]
+      }
+    },
+    "D": {
+      "EDGES": {
+        "permutation": [0, 1, 2, 3, 7, 4, 5, 6, 8, 9, 10, 11],
+        "orientationDelta": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "CENTERS": {
+        "permutation": [0, 1, 2, 3, 4, 5],
+        "orientationDelta": [0, 0, 0, 0, 0, 1]
+      }
+    }
+  },
+  "derivedMoves": {
+  }
+}

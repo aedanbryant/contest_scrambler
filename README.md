@@ -13,6 +13,7 @@ Events currently supported:
 | -----------|----------|--------------|-------------|-----------------|---------|
 | 2x2x2 Fewest Moves | 222fm | Yes | 7 | 17 | R' U' F |
 | Master Face-Turning Octahedron | mfto | No | N/A | N/A | None |
+| Super Floppy Cube | super_133 | Yes | TBD | TBD | None |
 | 1x3x3 | 133_cuboid | Yes | TBD | TBD | None |
 | 2x2x3 | 223_cuboid | Yes | TBD | TDB | None |
 | 2x3x3 | 233_cuboid | Yes | TBD | TDB | None |
@@ -43,3 +44,5 @@ Future Ideas:
 - Scramble Images
 - Twips python library
 - Multiphase solving
+
+U_PLUS_,R_PLUS_,ALL_PLUS_,BU_PLUS_,BR_PLUS_,BALL_PLUS_,DR_PLUS_,DL_PLUS_,D_PLUS_,L_PLUS_,BDR_PLUS_,BDL_PLUS_,BD_PLUS_,BL_PLUS_

@@ -4,6 +4,19 @@ from abc import ABC, abstractmethod
 from twips_cli.twips_cli import Twips
 from twips_cli.kpuzzle import KPuzzle
 
+def abstract_tip_scrambler(num_orientations: int, tip_list: list[str], modifier_list: list[str]):
+
+	tip_scramble = ""
+
+	for tip in tip_list:
+		tip_move = random.randint(0, num_orientations-1)
+
+		if tip_move == 0:
+			continue
+
+		tip_scramble += f"{tip}{modifier_list[tip_move]} "
+	
+	return tip_scramble.strip()
 
 
 class AbstractRandomStateScramblerTwipsCLI(ABC):
@@ -31,11 +44,14 @@ class AbstractRandomStateScramblerTwipsCLI(ABC):
 			scramble = self.twips.state_scramble(self.puzzle_file, self.state_file, self.min_scramble_length, self.generator_moves, min_solutions=1, extra_params=extra_params)
 			scramble = self.twips.parse_search_moves(scramble)
 
-			solutions = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1)
-			solution = self.twips.parse_search_moves(solutions)
+			solutions = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, max_depth=self.min_optimal_filter-1)
 
-			if self.twips.parse_movecount(solution) >= self.min_optimal_filter:
+			if solutions == "":
 				break
+
+			# solution = self.twips.parse_search_moves(solutions)
+			# if self.twips.parse_movecount(solution) >= self.min_optimal_filter:
+			# 	break
 		
 		return scramble
 
@@ -146,8 +162,11 @@ class AbstractClockScrambler():
 
 			amount = random.randint(0, self.hours - 1)
 
-			abs_amount = abs(amount - (self.hours // 2))
+			abs_amount = abs(amount - (self.hours // 2) + 1)
 			sign = "-" if (amount - (self.hours // 2)) < 0 else "+"
+
+			if abs_amount == 0:
+				sign = "+"
 
 			scramble += f"{move}{abs_amount}{sign} "
 

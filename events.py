@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import json
 
-from scramblers import AbstractRandomMoveScrambler, AbstractRandomStateScramblerTwipsCLI, AbstractClockScrambler
+from scramblers import AbstractRandomMoveScrambler, AbstractRandomStateScramblerTwipsCLI, AbstractClockScrambler, abstract_tip_scrambler
 
 cuboid_move_substitutions = {"L": "L2", "F": "F2", "R": "R2", "B": "B2"}
 square0_move_substitutions = {"R": "/","UU_DD'": "(6,6)","U_DD'": "(-3,6)","Ui_D'": "(3,-3)","UU_D'": "(6,-3)","U_D'": "(-3,-3)","UU'": "(6,0)","DD'": "(0,6)","U'": "(-3,0)","D'": "(0,-3)","UU_DD": "(6,6)","U_DD": "(3,6)","Ui_D": "(-3,3)","UU_D": "(6,3)","U_D": "(3,3)","UU": "(6,0)","U2": "(6,0)","DD": "(0,6)","D2": "(0,6)","U": "(3,0)","D": "(0,3)"}
@@ -41,7 +41,7 @@ class Cube2x2x2FewestMoves(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
         self.num_scrambles = 5
         self.num_extras = 2
 
-        super().__init__(twips_name, "puzzles/2x2x2.kpuzzle.json", state_file, "U,F,R", min_scramble_length=11, min_optimal_filter=0)
+        super().__init__(twips_name, "puzzles/2x2x2.kpuzzle.json", state_file, "U,F,R", min_scramble_length=11, min_optimal_filter=7)
 
     def gen_random_state(self):
         self.kpuzzle.state_pieces["CORNERS"] = self.kpuzzle.scramble_orbit_pieces("CORNERS", None, 6)
@@ -77,14 +77,19 @@ class ClockSpeedsolving(EventScrambleRounds):
     def scramble(self):
         return self.scrambler.generate_scramble()
 
-class PyraminxClockSpeedsolving(EventScrambleRounds):
+class PyraminxClockSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 
-    def __init__(self):
+    def __init__(self, twips_name: str, state_file: str):
         self.num_scrambles = 5
         self.num_extras = 2
 
         self.scrambler = AbstractClockScrambler(["U", "DR", "R", "D", "L", "ALL", "y2", "U", "DR", "R"], 12)
+
+        super().__init__(twips_name, "puzzles/pyraclock.kpuzzle.json", state_file, "U,R,ALL,BU,BR,BALL,DR,DL,D,L,BDR,BDL,BD,BL", min_scramble_length=0, min_optimal_filter=0)
     
+    def gen_random_state(self):
+        pass
+
     def scramble(self):
         return self.scrambler.generate_scramble()
     
@@ -199,3 +204,39 @@ class Square0Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRou
     def scramble(self):
         # return self.gen_scramble(extra_params=["--metric", "quantum"])
         return scramble_move_substitution(self.gen_scramble(extra_params=["--metric", "quantum"]), square0_move_substitutions)
+
+class SuperFloppySpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
+    def __init__(self, twips_name: str, state_file: str):
+
+        self.num_scrambles = 5
+        self.num_extras = 2
+
+        super().__init__(twips_name, "puzzles/super_floppy.kpuzzle.json", state_file, "L,F,R,B", min_scramble_length=0, min_optimal_filter=0)
+
+    def gen_random_state(self):
+        self.kpuzzle.state_pieces["EDGES"] = self.kpuzzle.scramble_orbit_pieces("EDGES", parity_constraint=None, fixed_index=None)
+        self.kpuzzle.state_orientations["CENTERS"] = self.kpuzzle.scramble_orbit_orientation("CENTERS", orientation_constraint=False)
+        self.kpuzzle.construct_state()
+        self.kpuzzle.write_state_to_file()
+    
+    def scramble(self):
+        return self.gen_scramble()
+    
+# TODO Takes a while
+class CornerTurningOctahedronSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
+    def __init__(self, twips_name: str, state_file: str):
+
+        self.num_scrambles = 5
+        self.num_extras = 2
+
+        super().__init__(twips_name, "puzzles/corner_turning_octahedron.kpuzzle.json", state_file, "U,D,L,F,R,B", min_scramble_length=0, min_optimal_filter=0)
+
+    def gen_random_state(self):
+        self.kpuzzle.state_pieces["EDGES"] = self.kpuzzle.scramble_orbit_pieces("EDGES", parity_constraint=None, fixed_index=None)
+        ep = self.kpuzzle.get_orbit_parity(self.kpuzzle.state_pieces["EDGES"])
+        self.kpuzzle.state_orientations["CENTERS"] = self.kpuzzle.scramble_orbit_orientation("CENTERS", orientation_constraint=True, custom_orientation_constraint_mod=2, custom_orientation_constraint=ep)
+        self.kpuzzle.construct_state()
+        self.kpuzzle.write_state_to_file()
+    
+    def scramble(self):
+        return f"{self.gen_scramble()} {abstract_tip_scrambler(4, ["u, d, r, l, f, b"], ["", "", "2", "'"])}"

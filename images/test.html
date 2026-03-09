@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <title>cubing.js | Scramble Sheet Tool</title>
+  <!-- <script src="./index.js" href="./index.ts" type="module"></script> -->
+  <link rel="stylesheet" href="./test.css" />
+</head>
+
+<body>
+
+    <script type="module">
+    import { TwistyPlayer } from "https://cdn.cubing.net/v0/js/cubing/twisty";
+
+    const table = document.createElement('table')
+    const tbody = document.createElement('tbody')
+
+    const tr = tbody.appendChild(document.createElement("tr"));
+
+    tr.appendChild(document.createElement("td")).textContent = "1"
+
+    const scrambleTD = tr.appendChild(document.createElement("td"));
+    scrambleTD.textContent = "R U R' U'";
+
+    const playerTD = tr.appendChild(document.createElement("td"));
+    const player = new TwistyPlayer({
+        alg: "R U R' U'",
+        puzzle: "2x2x2",
+        visualization: "2D",
+        controlPanel: "none",
+        background: "none",
+    });
+    playerTD.appendChild(player);
+
+
+    tbody.appendChild(tr)
+    table.appendChild(tbody)
+    document.body.appendChild(table);
+
+    </script>
+</body>
+
+</html>
+
+
+
+<script src="https://cdn.cubing.net/v0/js/cubing/twisty" type="module"></script>
+
+
+
+<table>
+    <tr>
+        <td>R U R' U R U2' R'</td>
+        <td><twisty-player puzzle="2x2x2" controlPanel="None" visualization="2D" background="none" alg="R U R' U R U2' R'"></twisty-player></td>
+    </tr>
+</table>
+

@@ -1,0 +1,67 @@
+{
+  "name": "Pyraminx Duo",
+  "orbits": [
+    {
+      "orbitName": "CORNERS",
+      "numPieces": 4,
+      "numOrientations": 3
+    },
+    {
+      "orbitName": "CENTERS",
+      "numPieces": 4,
+      "numOrientations": 1
+    }
+  ],
+  "defaultPattern": {
+    "CORNERS": {
+      "pieces": [0, 1, 2, 3],
+      "orientation": [0, 0, 0, 0]
+    },
+    "CENTERS": {
+      "pieces": [0, 1, 2, 3],
+      "orientation": [0, 0, 0, 0]
+    }
+  },
+  "moves": {
+    "U": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [1, 0, 0, 0]
+      },
+      "CENTERS": {
+        "permutation": [0, 3, 1, 2],
+        "orientationDelta": [0, 0, 0, 0]
+      }
+    },
+    "R": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 1, 0, 0]
+      },
+      "CENTERS": {
+        "permutation": [2, 1, 3, 0],
+        "orientationDelta": [0, 0, 0, 0]
+      }
+    },
+    "L": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 0, 1, 0]
+      },
+      "CENTERS": {
+        "permutation": [3, 0, 2, 1],
+        "orientationDelta": [0, 0, 0, 0]
+      }
+    },
+    "B": {
+      "CORNERS": {
+        "permutation": [0, 1, 2, 3],
+        "orientationDelta": [0, 0, 0, 1]
+      },
+      "CENTERS": {
+        "permutation": [1, 2, 0, 3],
+        "orientationDelta": [0, 0, 0, 0]
+      }
+    }
+  }
+}
