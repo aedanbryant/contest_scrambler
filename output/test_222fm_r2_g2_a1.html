@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FMC Score Sheet</title>
+	<link rel="stylesheet" href="../images/FMC.css">
+</head>
+<body>
+	<div class="sheet-container">
+		<div class="header-grid">
+
+
+			<div class="info-section">
+				<div class="meta-info centered-text">
+					<p>test</p>
+					<p>Attempt 1 of 5</p>
+					<p>2x2x2 Fewest Moves Round 2 Scramble Set 2</p>
+				</div>
+				<div class="input-fields">
+					<p>Competitor: ____________________</p>
+					<p>WCA ID: __ __ __ __ &nbsp; __ __ __ __ &nbsp; __ __</p>
+					<p>Registrant ID: ____</p>
+				</div>
+				<div class="grading-box">
+					<p class="small-text">DO NOT FILL IF YOU ARE THE COMPETITOR.</p>
+					<div class="grading-line">
+						<span>Graded by: ____________________</span>
+						<span>Result: ______</span>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div id="cube-container">
+					</div>
+
+				<script class="cube-visual" type="module">
+					import { TwistyPlayer } from "https://cdn.cubing.net/v0/js/cubing/twisty";
+
+					const container = document.getElementById("cube-container");
+					const player = new TwistyPlayer({
+						puzzle: "2x2x2",
+						alg: "R' U' F R' U' R2 U' F' R' F' R U' F U2 R' U' F",
+						visualization: "2D",
+						controlPanel: "none",
+						background: "none",
+					});
+
+					container.innerHTML = "";
+					container.appendChild(player);
+				</script>
+			</div>
+		</div>
+
+		<div class="scramble-section">
+			<strong>Scramble:</strong> R' U' F R' U' R2 U' F' R' F' R U' F U2 R' U' F
+		</div>
+
+		<div class="solution-grid">
+			<script>
+				for (let i = 0; i < 80; i++) {
+					document.write('<div class="move-bar"></div>');
+				}
+			</script>
+		</div>
+	</div>
+</body>
+</html>

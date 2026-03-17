@@ -15,6 +15,14 @@ def main():
                     dest="event",
                     type="string",
                     help="Event ID to generate scrambles for")
+    parser.add_option("-g", "--groups",
+                    dest="groups",
+                    type="string")
+    parser.add_option("-n", "--name",
+                    dest="name",
+                    type="string")
+    
+
     parser.add_option("-r", "--rounds",
                     dest="rounds",
                     type="int")
@@ -52,7 +60,14 @@ def main():
             print(f"Invalid EventID: \"{options.event}\"")
             return
 
-    event_scrambler.scramble_rounds(options.rounds, options.output_file)
+    try:
+        groups = [int(x) for x in options.groups.split(",")]
+    except:
+        print("Invalid group format, use r1,r2,...,rn")
+        return
+
+    # event_scrambler.scramble_rounds(options.rounds, options.output_file)
+    event_scrambler.scramble_rounds(groups, options.name)
 
 
 if __name__ == "__main__":

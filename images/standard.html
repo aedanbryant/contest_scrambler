@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <!-- <title></title> -->
+  <!-- <script src="./index.js" href="./index.ts" type="module"></script> -->
+  <link rel="stylesheet" href="../images/standard.css" />
+</head>
+
+<body>
+	<p class="centered-text">$comp_name</p>
+	<p class="centered-text">$event_name Round $round Scramble Set $group</p>
+
+	<script type="module">
+	import { TwistyPlayer } from "https://cdn.cubing.net/v0/js/cubing/twisty";
+
+
+	const puzzle_id = "$puzzle_id"
+	const num_scrambles = $num_scrambles
+	const num_extras = $num_extras
+	const scrambles = $scrambles
+	const extras = $extras
+
+
+	const table = document.createElement('table')
+
+	function addScramble(tbody, scramble, i, extra, puzzleID) {
+		const tr = tbody.appendChild(document.createElement("tr"));
+		tr.appendChild(document.createElement("td")).textContent = (extra ? "E" : "") + i + ".";
+		const scrambleTD = tr.appendChild(document.createElement("td"));
+		scrambleTD.textContent = scramble;
+		const playerTD = tr.appendChild(document.createElement("td"));
+		const player = new TwistyPlayer({
+			puzzle: puzzleID,
+			alg: scramble,
+			visualization: "2D",
+			controlPanel: "none",
+			background: "none",
+		});
+		playerTD.appendChild(player);
+	}
+
+	function addBody(num, scrambles, puzzle_id, extra) {
+		const tbody = table.appendChild(document.createElement("tbody"));
+		for (let i = 0; i < num; i++) {
+			addScramble(tbody, scrambles[i], i+1, extra, puzzle_id);
+		}
+	}
+
+	if (num_scrambles > 0) {
+		addBody(num_scrambles, scrambles, puzzle_id, false);
+	}
+	if (num_extras > 0) {
+		addBody(num_extras, extras, puzzle_id, true);
+	}
+	document.body.appendChild(table);
+
+	</script>
+</body>
+
+</html>
