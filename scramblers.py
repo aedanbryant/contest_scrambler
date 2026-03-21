@@ -59,6 +59,18 @@ class AbstractRandomStateScramblerTwipsCLI(ABC):
 		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, 0, random_start, max_depth)
 		return self.twips.parse_search_moves(solution)
 
+	def check_optimal_geq(self, scramble: str, depth: int):
+		"""
+		Returns True if the optimal depth is greater than or equal to the depth provided
+		"""
+
+		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, max_depth=depth-1)
+
+		if solution == "":
+			return True
+		
+		return False
+
 	def pad_scramble(self, solution, padding):
 
 		padded_solution = f"{padding} {solution} {padding}"

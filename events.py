@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import json
 from string import Template
+from datetime import datetime
 
 from scramblers import AbstractRandomMoveScrambler, AbstractRandomStateScramblerTwipsCLI, AbstractClockScrambler, abstract_tip_scrambler
 
@@ -8,7 +9,7 @@ from scramblers import AbstractRandomMoveScrambler, AbstractRandomStateScrambler
 STANDARD    = 0
 FMC         = 1
 NO_IMAGE    = 2
-template_paths = ["images/standard.html", "images/FMC.html"]
+template_paths = ["images/standard.html", "images/FMC.html", "images/no_image.html"]
 
 cuboid_move_substitutions = {"L": "L2", "F": "F2", "R": "R2", "B": "B2"}
 square0_move_substitutions = {"R": "/","UU_DD'": "(6,6)","U_DD'": "(-3,6)","Ui_D'": "(3,-3)","UU_D'": "(6,-3)","U_D'": "(-3,-3)","UU'": "(6,0)","DD'": "(0,6)","U'": "(-3,0)","D'": "(0,-3)","UU_DD": "(6,6)","U_DD": "(3,6)","Ui_D": "(-3,3)","UU_D": "(6,3)","U_D": "(3,3)","UU": "(6,0)","U2": "(6,0)","DD": "(0,6)","D2": "(0,6)","U": "(3,0)","D": "(0,3)"}
@@ -23,7 +24,9 @@ def scramble_move_substitution(scramble: str, move_substitutions: dict):
 
 class EventScrambleRounds:
 	def scramble_rounds(self, groups: list[int], comp_name: str):
-		event_scrambles = {}
+
+
+		event_scrambles = {"competition_name": comp_name, "event_id": self.event_id, "generation_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
   
 		num_rounds = len(groups)
 		num_scrambles = self.num_scrambles
@@ -48,7 +51,7 @@ class EventScrambleRounds:
 					event_scrambles["rounds"][i]["groups"][j]["extras"].append(self.scramble())
 
 		# json
-		with open(f"output/{comp_name}.json", "w") as f:
+		with open(f"output/{comp_name}_{self.event_id}.json", "w") as f:
 			json.dump(event_scrambles, f, indent=4)
 
 		# pdf
@@ -57,15 +60,25 @@ class EventScrambleRounds:
 
 		template = Template(html_template)
 
-		if self.pdf_type == STANDARD:
+		if (self.pdf_type == STANDARD) or (self.pdf_type == NO_IMAGE):
 			for i in range(num_rounds):
 				for j in range(groups[i]):
 					output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": self.puzzle_id, 
 											"round": i+1, "group": j+1, "num_scrambles": num_scrambles, "num_extras": num_extras,
-											"scrambles": event_scrambles["rounds"][i]["groups"][j]["scrambles"], "extras": event_scrambles["rounds"][i]["groups"][j]["scrambles"]})
+											"scrambles": event_scrambles["rounds"][i]["groups"][j]["scrambles"], "extras": event_scrambles["rounds"][i]["groups"][j]["extras"]})
 				
 					with open(f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.html", "w") as f:
 						f.write(output_html)
+
+		# if self.pdf_type == NO_IMAGE:
+		# 	for i in range(num_rounds):
+		# 		for j in range(groups[i]):
+		# 			output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": self.puzzle_id, 
+		# 									"round": i+1, "group": j+1, "num_scrambles": num_scrambles, "num_extras": num_extras,
+		# 									"scrambles": event_scrambles["rounds"][i]["groups"][j]["scrambles"], "extras": event_scrambles["rounds"][i]["groups"][j]["scrambles"]})
+				
+		# 			with open(f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.html", "w") as f:
+		# 				f.write(output_html)
 		
 		if self.pdf_type == FMC:
 
@@ -78,6 +91,13 @@ class EventScrambleRounds:
 						with open(f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.html", "w") as f:
 							f.write(output_html)
 
+					for k in range(num_extras):
+						output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": f"{self.puzzle_id}",
+											"round": i+1, "group": j+1, "attempt": f"E{k+1}", "num_attempts": num_extras,
+											"scramble": event_scrambles["rounds"][i]["groups"][j]["extras"][k]})
+						with open(f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.html", "w") as f:
+							f.write(output_html)
+
 		return event_scrambles
 
 class Cube2x2x2FewestMoves(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
@@ -85,7 +105,7 @@ class Cube2x2x2FewestMoves(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
 
 		self.event_name = "2x2x2 Fewest Moves"
 		self.event_id = "222fm"
-		self.pdf_type = FMC
+		self.pdf_type = STANDARD
 		self.puzzle_id = "2x2x2"
 
 		self.num_scrambles = 5
@@ -107,6 +127,11 @@ class Cube2x2x2FewestMoves(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
 class Octahedron4x4x4Speedsolving(EventScrambleRounds):
 	def __init__(self):
 
+		self.event_name = "Master Face-Turning Octahedron"
+		self.event_id = "mfto"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
+
 		self.num_scrambles = 3
 		self.num_extras = 2
 
@@ -119,6 +144,12 @@ class Octahedron4x4x4Speedsolving(EventScrambleRounds):
 class ClockSpeedsolving(EventScrambleRounds):
 
 	def __init__(self):
+
+		self.event_name = "Clock"
+		self.event_id = "standard"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = "Clock"
+
 		self.num_scrambles = 5
 		self.num_extras = 2
 
@@ -130,6 +161,11 @@ class ClockSpeedsolving(EventScrambleRounds):
 class PyraminxClockSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 
 	def __init__(self, twips_name: str, state_file: str):
+		self.event_name = "Triangle Clock"
+		self.event_id = "pyra_clock"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
+
 		self.num_scrambles = 5
 		self.num_extras = 2
 
@@ -145,6 +181,11 @@ class PyraminxClockSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScram
 	
 class Cuboid1x3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
+
+		self.event_name = "1x3x3"
+		self.event_id = "133_cuboid"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
 
 		self.num_scrambles = 5
 		self.num_extras = 2
@@ -164,6 +205,11 @@ class Cuboid1x3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 class Cuboid2x2x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
 
+		self.event_name = "2x3x3"
+		self.event_id = "223_cuboid"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
+
 		self.num_scrambles = 5
 		self.num_extras = 2
 
@@ -180,6 +226,11 @@ class Cuboid2x2x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 
 class Cuboid2x3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
+
+		self.event_name = "2x3x3"
+		self.event_id = "233_cuboid"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
 
 		self.num_scrambles = 5
 		self.num_extras = 2
@@ -198,6 +249,11 @@ class Cuboid2x3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 class Pentahedron3x2Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
 
+		self.event_name = "2-Pentahedron"
+		self.event_id = "2pentahedron"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
+
 		self.num_scrambles = 5
 		self.num_extras = 2
 
@@ -214,6 +270,11 @@ class Pentahedron3x2Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScra
 
 class Pentahedron3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
+
+		self.event_name = "3-Pentahedron"
+		self.event_id = "3pentahedron"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
 
 		self.num_scrambles = 5
 		self.num_extras = 2
@@ -240,6 +301,11 @@ class Pentahedron3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScra
 class Square0Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
 
+		self.event_name = "Square-0"
+		self.event_id = "sq0"
+		self.pdf_type = STANDARD
+		self.puzzle_id = "square1"
+
 		self.num_scrambles = 5
 		self.num_extras = 2
 
@@ -257,6 +323,11 @@ class Square0Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRou
 
 class SuperFloppySpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
+
+		self.event_name = "Super Floppy Cube"
+		self.event_id = "super_133"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
 
 		self.num_scrambles = 5
 		self.num_extras = 2
@@ -276,6 +347,11 @@ class SuperFloppySpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 class CornerTurningOctahedronSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
 
+		self.event_name = "Corner-Turning Octahedron"
+		self.event_id = "cto"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
+
 		self.num_scrambles = 5
 		self.num_extras = 2
 
@@ -290,3 +366,38 @@ class CornerTurningOctahedronSpeedsolving(AbstractRandomStateScramblerTwipsCLI, 
 	
 	def scramble(self):
 		return f"{self.gen_scramble()} {abstract_tip_scrambler(4, ["u, d, r, l, f, b"], ["", "", "2", "'"])}"
+	
+
+class CornerTurningOctahedronSpeedsolvingTwoPhase(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
+	def __init__(self, twips_name: str, state_file: str):
+
+		self.event_name = "Corner-Turning Octahedron"
+		self.event_id = "cto"
+		self.pdf_type = NO_IMAGE
+		self.puzzle_id = None
+
+		self.num_scrambles = 5
+		self.num_extras = 2
+
+		self.random_move = AbstractRandomMoveScrambler(1000, [[['U','D'],['F','B'],['R','L']]], [["", "'", "2"]])
+
+		self.phase_1_definition = "puzzles/cto_p1.kpuzzle.json"
+		self.phase_1_generator_moves = "U,D,L,F,R,B"
+
+		super().__init__(twips_name, "puzzles/cto.kpuzzle.json", state_file, "U,R", min_scramble_length=0, min_optimal_filter=0)
+	
+	def gen_random_state(self):
+		pass
+
+	def scramble(self):
+
+		rm_scramble = self.random_move.generate_scramble()
+
+		p1 = self.twips.parse_search_moves(self.twips.solve_scramble(self.phase_1_definition, rm_scramble, self.phase_1_generator_moves, 1))
+
+		p2 = self.solve_scramble(f"{rm_scramble} {p1}")
+
+		scramble =  f"{p1} {p2}"
+
+		return f"{scramble} {abstract_tip_scrambler(4, ["u, d, r, l, f, b"], ["", "", "2", "'"])}"
+

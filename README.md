@@ -40,6 +40,8 @@ Events to add:
 - Rainbow Ball (IDK how to make kpuzzle def for this)
 
 
+Remember to cancel moves between phases
+
 Future Ideas:
 - Scramble Images
 - Twips python library
