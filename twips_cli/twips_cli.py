@@ -34,12 +34,13 @@ class Twips():
 		command = [
 			self.twips_name,
 			"search",
-			"--experimental-target-pattern", state_file,
+			# "--experimental-target-pattern", state_file,
 			"--generator-moves", generator_moves,
 			"--min-num-solutions", str(min_solutions),
 			"--min-depth", str(min_depth),
-			"--scramble-alg", "",
-			puzzle_file
+			# "--scramble-alg", "",
+			puzzle_file,
+			state_file
 		]
 
 		if extra_params != None:
@@ -55,7 +56,18 @@ class Twips():
 
 		return output.stdout
 
-	def solve_scramble(self, puzzle_file: str, scramble: str, generator_moves: str, min_solutions: int, min_depth: int = 0, random_start: bool = False, max_depth = None):
+	def twip_scramble_builtin(self, event_id):
+		command = [
+			"twips_cli/twips",
+			"scramble",
+			event_id
+		]
+
+		output = subprocess.run(command, capture_output=True, text=True)
+
+		return output.stdout.strip()
+
+	def solve_scramble(self, puzzle_file: str, scramble: str, generator_moves: str, min_solutions: int, min_depth: int = 0, random_start: bool = False, max_depth = None, extra_params = None):
 		command = [
 			self.twips_name,
 			"search",
@@ -70,6 +82,9 @@ class Twips():
 			command.append("--max-depth")
 			command.append(str(max_depth + 1))
 
+		if extra_params != None:
+			command += extra_params
+
 		# print_command_debug(command)
 
 		# Doesn't work in current version
@@ -79,3 +94,4 @@ class Twips():
 		output = subprocess.run(command, capture_output=True, text=True)
 
 		return output.stdout
+

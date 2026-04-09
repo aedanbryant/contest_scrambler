@@ -1,0 +1,142 @@
+{
+	"name": "Super Gear Cube",
+	"orbits": [
+		{
+			"orbitName": "EDGES_1",
+			"numPieces": 4,
+			"numOrientations": 6
+		},
+		{
+			"orbitName": "EDGES_2",
+			"numPieces": 4,
+			"numOrientations": 6
+		},
+		{
+			"orbitName": "EDGES_3",
+			"numPieces": 4,
+			"numOrientations": 6
+		},
+		{
+			"orbitName": "CORNERS_1",
+			"numPieces": 4,
+			"numOrientations": 1
+		},
+		{
+			"orbitName": "CORNERS_2",
+			"numPieces": 4,
+			"numOrientations": 1
+		},
+		{
+			"orbitName": "CENTERS",
+			"numPieces": 6,
+			"numOrientations": 1
+		}
+
+	],
+	"defaultPattern": {
+		"EDGES_1": {
+			"pieces": [0, 1, 2, 3],
+			"orientation": [0, 0, 0, 0]
+		},
+		"EDGES_2": {
+			"pieces": [0, 1, 2, 3],
+			"orientation": [0, 0, 0, 0]
+		},
+		"EDGES_3": {
+			"pieces": [0, 1, 2, 3],
+			"orientation": [0, 0, 0, 0]
+		},
+		"CORNERS_1": {
+			"pieces": [0, 1, 2, 3],
+			"orientation": [0, 0, 0, 0]
+		},
+		"CORNERS_2": {
+			"pieces": [0, 1, 2, 3],
+			"orientation": [0, 0, 0, 0]
+		},
+		"CENTERS": {
+			"pieces": [0, 1, 2, 3, 4, 5],
+			"orientation": [0, 0, 0, 0, 0, 0]
+		}
+	},
+	"moves": {
+		"U": {
+			"EDGES_1": {
+				"permutation": [1, 0, 2, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"EDGES_2": {
+				"permutation": [1, 0, 2, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"EDGES_3": {
+				"permutation": [2, 0, 3, 1],
+				"orientationDelta": [4, 4, 4, 4]
+			},
+			"CORNERS_1": {
+				"permutation": [1, 0, 2, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CORNERS_2": {
+				"permutation": [1, 0, 2, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CENTERS": {
+				"permutation": [0, 2, 3, 4, 1, 5],
+				"orientationDelta": [0, 0, 0, 0, 0, 0]
+			}
+		},
+		"F": {
+			"EDGES_1": {
+				"permutation": [2, 1, 0, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"EDGES_2": {
+				"permutation": [1, 3, 0, 2],
+				"orientationDelta": [4, 4, 4, 4]
+			},
+			"EDGES_3": {
+				"permutation": [1, 0, 2, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CORNERS_1": {
+				"permutation": [2, 1, 0, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CORNERS_2": {
+				"permutation": [0, 2, 1, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CENTERS": {
+				"permutation": [1, 5, 2, 0, 4, 3],
+				"orientationDelta": [0, 0, 0, 0, 0, 0]
+			}
+		},
+		"R": {
+			"EDGES_1": {
+				"permutation": [2, 0, 3, 1],
+				"orientationDelta": [4, 4, 4, 4]
+			},
+			"EDGES_2": {
+				"permutation": [2, 1, 0, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"EDGES_3": {
+				"permutation": [2, 1, 0, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CORNERS_1": {
+				"permutation": [3, 1, 2, 0],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CORNERS_2": {
+				"permutation": [2, 1, 0, 3],
+				"orientationDelta": [0, 0, 0, 0]
+			},
+			"CENTERS": {
+				"permutation": [2, 1, 5, 3, 0, 4],
+				"orientationDelta": [0, 0, 0, 0, 0, 0]
+			}
+		}
+	}
+}

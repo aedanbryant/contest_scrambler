@@ -16,12 +16,14 @@ class KPuzzle():
 		
 		self.state_pieces = {}
 		self.state_orientations = {}
+		self.state_orientation_mods = {}
 		self.state = {}
 
 		self.set_default_state()
 
 		self.state_pieces = self.default_pieces.copy()
 		self.state_orientations = self.default_orientations.copy()
+		self.state_orientation_mods = self.default_orientation_mods.copy()
 
 	def write_state_to_file(self):
 		with open(self.kpattern_filepath, "w") as f:
@@ -29,7 +31,7 @@ class KPuzzle():
 
 	def construct_state(self):
 		for piecetype in self.orbit_names:
-			self.state[piecetype] = {"pieces": self.state_pieces[piecetype], "orientation": self.state_orientations[piecetype]}
+			self.state[piecetype] = {"pieces": self.state_pieces[piecetype], "orientation": self.state_orientations[piecetype], "orientationMod": self.state_orientation_mods[piecetype]}
 
 
 	def get_orbit_parity(self, orbit: list[int]):
@@ -118,7 +120,7 @@ class KPuzzle():
 			try:
 				self.default_orientation_mods[piecetype] = kpuzzle["defaultPattern"][piecetype]['orientationMod']
 			except:
-				self.default_orientation_mods[piecetype] = None
+				self.default_orientation_mods[piecetype] = kpuzzle["defaultPattern"][piecetype]['orientation']
 
 		for piecetype in kpuzzle["orbits"]:
 			self.orbit_names.append(piecetype["orbitName"])

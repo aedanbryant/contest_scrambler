@@ -59,12 +59,15 @@ class AbstractRandomStateScramblerTwipsCLI(ABC):
 		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, 0, random_start, max_depth)
 		return self.twips.parse_search_moves(solution)
 
-	def check_optimal_geq(self, scramble: str, depth: int):
+	def check_optimal_geq(self, scramble: str, depth: int, QTM: bool = False):
 		"""
 		Returns True if the optimal depth is greater than or equal to the depth provided
 		"""
 
-		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, max_depth=depth-1)
+		if QTM == False:
+			solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, max_depth=depth-1)
+		else:
+			solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, max_depth=depth-1, extra_params=["--metric", "quantum"])
 
 		if solution == "":
 			return True

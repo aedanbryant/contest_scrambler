@@ -3,8 +3,118 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>FMC Score Sheet</title>
-	<link rel="stylesheet" href="../images/FMC.css">
+	<!-- <title></title> -->
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			display: flex;
+			justify-content: center;
+			padding: 0;
+			background-color: #ffffff;
+			margin: 0;
+		}
+
+		.sheet-container {
+			background-color: #ffffff;
+			width: 8.5in;
+			height: 11in;
+			padding: 0.4in;
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.centered-text {
+			text-align: center;
+		}
+
+		/* Header Layout */
+		.header-grid {
+			display: grid;
+			grid-template-columns: 1fr 1.6fr;
+			border-bottom: 2px solid black;
+			padding-bottom: 10px;
+		}
+
+		/* Info Section */
+		.info-section {
+			align-content: center;
+			padding-left: 20px;
+			font-size: 0.8rem;
+		}
+
+		.meta-info p {
+			margin: 2px 0;
+			line-height: 1.1;
+		}
+
+		.grading-box {
+			border: 1px solid black;
+			padding: 5px;
+			margin: 10px 0;
+		}
+
+		.small-text {
+			font-size: 0.7rem;
+			margin: 0 0 5px 0;
+			text-align: center;
+		}
+
+		.grading-line {
+			display: flex;
+			justify-content: space-between;
+			white-space: nowrap;
+		}
+
+		.cube-visual {
+			border-bottom: 2px solid black;
+			margin-top: 20px;
+		}
+
+		/* Scramble Bar */
+		.scramble-section {
+			border-bottom: 2px solid black;
+			padding: 15px 0;
+			margin-bottom: 20px;
+			font-size: 1.1rem;
+			word-spacing: 4px;
+		}
+
+		/* Solution Grid */
+		.solution-grid {
+			display: grid;
+			grid-template-columns: repeat(10, 1fr);
+			grid-template-rows: repeat(8, 1fr);
+			gap: 30px 20px;
+			flex-grow: 1;
+			padding-top: 20px;
+		}
+
+		.move-bar {
+			border-bottom: 1.5px solid black;
+			height: 20px;
+			width: 100%;
+		}
+
+		/* PRINT SPECIFIC FIXES */
+		@media print {
+			body {
+				background: none;
+				padding: 0;
+			}
+			.sheet-container {
+				width: 100%;
+				height: 100%;
+				padding: 0.4in;
+				border: none;
+			}
+			/* Prevents the browser from trying to "wrap" the notation row */
+			.notation-row {
+				grid-template-columns: 115px 1fr;
+				page-break-inside: avoid;
+			}
+		}
+	</style>
 </head>
 <body>
 	<div class="sheet-container">

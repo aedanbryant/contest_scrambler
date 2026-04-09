@@ -14,33 +14,34 @@ Events currently supported:
 | 2x2x2 Fewest Moves | 222fm | Yes | 7 | 17 | R' U' F |
 | Master Face-Turning Octahedron | mfto | No | N/A | N/A | None |
 | Super Floppy Cube | super_133 | Yes | TBD | TBD | None |
-| 1x3x3 | 133_cuboid | Yes | TBD | TBD | None |
-| 2x2x3 | 223_cuboid | Yes | TBD | TDB | None |
-| 2x3x3 | 233_cuboid | Yes | TBD | TDB | None |
-| 2-layer Pentahedron | 2pentahedron | Yes | TBD | TBD | None |
-| 3-layer Pentahedron | 3pentahedron | Yes | TBD | TBD | None |
-| Square-0 | sq0 | Yes | TBD | TBD | None |
+| 1x3x3 | 133_cuboid | Yes | 3 | 8 | None |
+| 2x2x3 | 223_cuboid | Yes | 7 | 14 | None |
+| 2x3x3 | 233_cuboid | Yes | 2 | None | None |
+| 2-layer Pentahedron | 2pentahedron | Yes | 7 | 13 | None |
+| 3-layer Pentahedron | 3pentahedron | Yes | 8 | 13 | None |
+| Square-0 | sq0 | Yes | 6 | 14 | None |
+| CTO | cto | Pseudo | TBD | TBD | None |
+| Ivy Cube | ivy_cube | Yes | 4 | 8 | None |
+| Pyraminx Duo | pyram_duo | Yes | 2 | 4 | None |
+| Dino Cube | dino | Yes | 7 | 14 | None |
+| Pyramorphix | pyramorphix | Yes | 5 | 9 | None |
+| Super Gear Cube | super_gear_cube | Pseudo | 4 | 8 | None |
+| Gear Cube | gear_cube | Pseudo | 4 | 6 | None |
 
+| Baby FTO | baby_fto | Yes | 5 | 10 | None |
+| Kilominx | kilominx | Yes | 2 | None | None |
 
-Events to add:
-- 2x2 BLD (random orientation)
-- 4x4 FMC (padding, probably random move)
-- Pyramorphix
+Possible additions to add:
 - 3x3 with supercube centers
 - 8x8+
 - Master Kilominx+
-- CTO
-- Dino Cube (To add our own movecount cutoff)
-- Ivy Cube (To add our own movecount cutoff)
-- Pyraminx Duo (To add our own movecount cutoff)
-- Super Pentagonal Clock
-- Pentagonal Clock (New Style)
-- Super 1x3x3 (To add our own movecount cutoff)
 - 3x3x4
 - Rainbow Ball (IDK how to make kpuzzle def for this)
 
 
 Remember to cancel moves between phases
+
+./main.py --events 444fm:mfto:clock:pyra_clock:penta_clock:new_penta_clock:222fm:133_cuboid:223_cuboid:233_cuboid:2pentahedron:3pentahedron:sq0:super_133:ivy_cube:pyram_duo:dino:cto:pyramorphix:super_gear_cube:gear_cube:baby_fto:kilominx --groups 1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1 --name "Test Open 2026"
 
 Future Ideas:
 - Scramble Images
