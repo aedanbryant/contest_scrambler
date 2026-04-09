@@ -5,10 +5,10 @@ import random
 
 from twips_cli.twips_cli import Twips
 from scramblers import AbstractRandomMoveScrambler, AbstractRandomStateScramblerTwipsCLI, AbstractClockScrambler, abstract_tip_scrambler
-from scramble_utils import cancel_moves
+from utils import clock_movesub
 
-import asyncio
-from playwright.async_api import async_playwright
+# import asyncio
+# from playwright.async_api import async_playwright
 
 STANDARD    = 0
 FMC         = 1
@@ -16,6 +16,7 @@ NO_IMAGE    = 2
 template_paths = ["images/standard.html", "images/FMC.html", "images/no_image.html"]
 
 cuboid_move_substitutions = {"L": "L2", "F": "F2", "R": "R2", "B": "B2"}
+inverse_cuboid_move_substitutions = {"L2": "L", "F2": "F", "R2": "R", "B2": "B"}
 square0_move_substitutions = {"R": "/","UU_DD'": "(6,6)","U_DD'": "(-3,6)","Ui_D'": "(3,-3)","UU_D'": "(6,-3)","U_D'": "(-3,-3)","UU'": "(6,0)","DD'": "(0,6)","U'": "(-3,0)","D'": "(0,-3)","UU_DD": "(6,6)","U_DD": "(3,6)","Ui_D": "(-3,3)","UU_D": "(6,3)","U_D": "(3,3)","UU": "(6,0)","U2": "(6,0)","DD": "(0,6)","D2": "(0,6)","U": "(3,0)","D": "(0,3)"}
 
 def scramble_move_substitution(scramble: str, move_substitutions: dict):
@@ -24,17 +25,17 @@ def scramble_move_substitution(scramble: str, move_substitutions: dict):
 	
 	return scramble
 
-async def html2pdf(html_filepath, pdf_filepath):
+# async def html2pdf(html_filepath, pdf_filepath):
 
-	with open(html_filepath, 'r') as f:
-		html = "".join(f.readlines())
+# 	with open(html_filepath, 'r') as f:
+# 		html = "".join(f.readlines())
 
-	async with async_playwright() as p:
-		browser = await p.chromium.launch()
-		page = await browser.new_page()
-		await page.set_content(html)
-		await page.pdf(path=pdf_filepath)
-		await browser.close()
+# 	async with async_playwright() as p:
+# 		browser = await p.chromium.launch()
+# 		page = await browser.new_page()
+# 		await page.set_content(html)
+# 		await page.pdf(path=pdf_filepath)
+# 		await browser.close()
 
 class EventScrambleRounds:
 	def scramble_rounds(self, groups: list[int], comp_name: str, num_scrambles: int = None, num_extras: int = None):
@@ -81,7 +82,7 @@ class EventScrambleRounds:
 					with open(html_filepath, "w") as f:
 						f.write(output_html)
 					
-					asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.pdf"))
+					# asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.pdf"))
 					
 
 
@@ -97,7 +98,7 @@ class EventScrambleRounds:
 						html_filepath = f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.html"
 						with open(html_filepath, "w") as f:
 							f.write(output_html)
-						asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.pdf"))
+						# asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.pdf"))
 
 					for k in range(num_extras):
 						output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": f"{self.puzzle_id}",
@@ -107,7 +108,7 @@ class EventScrambleRounds:
 						html_filepath = f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.html"
 						with open(html_filepath, "w") as f:
 							f.write(output_html)
-						asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.pdf"))
+						# asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.pdf"))
 
 
 
@@ -218,7 +219,7 @@ class PyraminxClockSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScram
 
 		self.scrambler = AbstractClockScrambler(["U", "DR", "R", "D", "L", "ALL", "y2", "U", "DR", "R"], 12)
 
-		super().__init__(twips_name, "puzzles/pyraclock.kpuzzle.json", state_file, "U,R,ALL,BU,BR,BALL,DR,DL,D,L,BDR,BDL,BD,BL", min_scramble_length=0, min_optimal_filter=0)
+		super().__init__(twips_name, "puzzles/pyraclock.kpuzzle.json", state_file, "U,R,ALL,BU,BR,BALL,DR,DL,D,L,BDR,BDL,BD,BL", min_scramble_length=0, min_optimal_filter=6)
 	
 	def gen_random_state(self):
 		pass
@@ -226,11 +227,12 @@ class PyraminxClockSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScram
 	def scramble(self):
 
 		while True:
-			scramble = self.scrambler.generate_scramble()
+			original_scramble = self.scrambler.generate_scramble()
+			scramble = clock_movesub(original_scramble)
 			if self.check_optimal_geq(scramble, depth=6, QTM=False) == True:
 				break
 
-		return scramble
+		return original_scramble
 
 
 class PentagonalClockSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
@@ -414,7 +416,7 @@ class Square0Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRou
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/square0.kpuzzle.json", state_file, "U,D,R,U_D,Ui_D,U_DD,UU_D,UU_DD,UU,DD", min_scramble_length=14, min_optimal_filter=6)
+		super().__init__(twips_name, "puzzles/square0.kpuzzle.json", state_file, "U,D,R,U_D,Ui_D,U_DD,UU_D,UU_DD,UU,DD", min_scramble_length=0, min_optimal_filter=6)
 
 	def gen_random_state(self):
 		self.kpuzzle.state_pieces["CORNERS"] = self.kpuzzle.scramble_orbit_pieces("CORNERS", parity_constraint=None, fixed_index=None)
@@ -438,7 +440,7 @@ class SuperFloppySpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/super_floppy.kpuzzle.json", state_file, "L,F,R,B", min_scramble_length=7, min_optimal_filter=13)
+		super().__init__(twips_name, "puzzles/super_floppy.kpuzzle.json", state_file, "L,F,R,B", min_scramble_length=13 , min_optimal_filter=7)
 
 	def gen_random_state(self):
 		self.kpuzzle.state_pieces["EDGES"] = self.kpuzzle.scramble_orbit_pieces("EDGES", parity_constraint=None, fixed_index=None)

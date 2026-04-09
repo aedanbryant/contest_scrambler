@@ -2,9 +2,9 @@
 Options:
 
 ```
---event <Event ID>
---rounds <number of rounds>
---out <Filename to save scrambles to>
+--events <Event ID 1>:<Event ID 2> (repeat for as many events as necessary)
+--groups <Number of rounds for event 1 round 1>,<Number of rounds for event 1 round 2>:<Number of rounds for event 2 round 1> (repeat for as many events & rounds as necessary)
+--name <Competition Name>
 ```
 
 Events currently supported:
@@ -27,9 +27,9 @@ Events currently supported:
 | Pyramorphix | pyramorphix | Yes | 5 | 9 | None |
 | Super Gear Cube | super_gear_cube | Pseudo | 4 | 8 | None |
 | Gear Cube | gear_cube | Pseudo | 4 | 6 | None |
-
 | Baby FTO | baby_fto | Yes | 5 | 10 | None |
 | Kilominx | kilominx | Yes | 2 | None | None |
+
 
 Possible additions to add:
 - 3x3 with supercube centers
@@ -38,12 +38,5 @@ Possible additions to add:
 - 3x3x4
 - Rainbow Ball (IDK how to make kpuzzle def for this)
 
-
-Remember to cancel moves between phases
-
+Example command to generate all rounds:
 ./main.py --events 444fm:mfto:clock:pyra_clock:penta_clock:new_penta_clock:222fm:133_cuboid:223_cuboid:233_cuboid:2pentahedron:3pentahedron:sq0:super_133:ivy_cube:pyram_duo:dino:cto:pyramorphix:super_gear_cube:gear_cube:baby_fto:kilominx --groups 1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1 --name "Test Open 2026"
-
-Future Ideas:
-- Scramble Images
-- Twips python library
-- Multiphase solving
