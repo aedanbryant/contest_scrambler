@@ -55,8 +55,8 @@ class AbstractRandomStateScramblerTwipsCLI(ABC):
 		
 		return scramble
 
-	def solve_scramble(self, scramble: str, random_start: bool = False, max_depth = None):
-		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, 0, random_start, max_depth)
+	def solve_scramble(self, scramble: str, random_start: bool = False, max_depth = None, min_depth = 0):
+		solution = self.twips.solve_scramble(self.puzzle_file, scramble, self.generator_moves, 1, min_depth, random_start, max_depth)
 		return self.twips.parse_search_moves(solution)
 
 	def check_optimal_geq(self, scramble: str, depth: int, QTM: bool = False):

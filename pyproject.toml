@@ -1,0 +1,15 @@
+[project]
+name = "contest-scrambles"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ipykernel>=7.2.0",
+    "matplotlib>=3.10.8",
+    "playwright>=1.58.0",
+    "twips-python",
+]
+
+[tool.uv.sources]
+twips-python = { path = "../twips_python", editable = true }

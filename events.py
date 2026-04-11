@@ -2,43 +2,24 @@ from abc import ABC, abstractmethod
 import json
 from string import Template
 import random
+import asyncio
 
 from twips_cli.twips_cli import Twips
 from scramblers import AbstractRandomMoveScrambler, AbstractRandomStateScramblerTwipsCLI, AbstractClockScrambler, abstract_tip_scrambler
-from utils import clock_movesub
+from utils import clock_movesub, scramble_move_substitution, html2pdf, cuboid_move_substitutions, square0_move_substitutions
 
-# import asyncio
-# from playwright.async_api import async_playwright
 
 STANDARD    = 0
 FMC         = 1
 NO_IMAGE    = 2
 template_paths = ["images/standard.html", "images/FMC.html", "images/no_image.html"]
 
-cuboid_move_substitutions = {"L": "L2", "F": "F2", "R": "R2", "B": "B2"}
-inverse_cuboid_move_substitutions = {"L2": "L", "F2": "F", "R2": "R", "B2": "B"}
-square0_move_substitutions = {"R": "/","UU_DD'": "(6,6)","U_DD'": "(-3,6)","Ui_D'": "(3,-3)","UU_D'": "(6,-3)","U_D'": "(-3,-3)","UU'": "(6,0)","DD'": "(0,6)","U'": "(-3,0)","D'": "(0,-3)","UU_DD": "(6,6)","U_DD": "(3,6)","Ui_D": "(-3,3)","UU_D": "(6,3)","U_D": "(3,3)","UU": "(6,0)","U2": "(6,0)","DD": "(0,6)","D2": "(0,6)","U": "(3,0)","D": "(0,3)"}
-
-def scramble_move_substitution(scramble: str, move_substitutions: dict):
-	for move in move_substitutions:
-		scramble = scramble.replace(move, move_substitutions[move])
-	
-	return scramble
-
-# async def html2pdf(html_filepath, pdf_filepath):
-
-# 	with open(html_filepath, 'r') as f:
-# 		html = "".join(f.readlines())
-
-# 	async with async_playwright() as p:
-# 		browser = await p.chromium.launch()
-# 		page = await browser.new_page()
-# 		await page.set_content(html)
-# 		await page.pdf(path=pdf_filepath)
-# 		await browser.close()
 
 class EventScrambleRounds:
-	def scramble_rounds(self, groups: list[int], comp_name: str, num_scrambles: int = None, num_extras: int = None):
+	def image_move_sub(self, scrambles):
+		return scrambles
+
+	def scramble_rounds(self, groups: list[int], comp_name: str, comp_dir: str, num_scrambles: int = None, num_extras: int = None, gen_pdf = True):
 
 		# event_scrambles = {"competition_name": comp_name, "event_id": self.event_id, "generation_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 		event_scrambles = {"event_id": self.event_id, "rounds": []}
@@ -76,13 +57,14 @@ class EventScrambleRounds:
 					output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": self.puzzle_id, 
 											"round": i+1, "group": j+1, "num_scrambles": num_scrambles, "num_extras": num_extras,
 											"stickering_mask": self.stickering_mask,
-											"scrambles": event_scrambles["rounds"][i]["groups"][j]["scrambles"], "extras": event_scrambles["rounds"][i]["groups"][j]["extras"]})
+											"scrambles": event_scrambles["rounds"][i]["groups"][j]["scrambles"], "extras": event_scrambles["rounds"][i]["groups"][j]["extras"],
+											"image_scrambles": self.image_move_sub(event_scrambles["rounds"][i]["groups"][j]["scrambles"]), "image_extras": self.image_move_sub(event_scrambles["rounds"][i]["groups"][j]["extras"])})
 				
-					html_filepath = f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.html"
+					html_filepath = f"{comp_dir}/html/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.html"
 					with open(html_filepath, "w") as f:
 						f.write(output_html)
 					
-					# asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.pdf"))
+					if gen_pdf: asyncio.run(html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.pdf"))
 					
 
 
@@ -95,20 +77,20 @@ class EventScrambleRounds:
 											"round": i+1, "group": j+1, "attempt": k+1, "num_attempts": num_scrambles,
 											"scramble": event_scrambles["rounds"][i]["groups"][j]["scrambles"][k]})
 						
-						html_filepath = f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.html"
+						html_filepath = f"{comp_dir}/html/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.html"
 						with open(html_filepath, "w") as f:
 							f.write(output_html)
-						# asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.pdf"))
+						if gen_pdf:  asyncio.run(html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.pdf"))
 
 					for k in range(num_extras):
 						output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": f"{self.puzzle_id}",
 											"round": i+1, "group": j+1, "attempt": f"E{k+1}", "num_attempts": num_extras,
 											"scramble": event_scrambles["rounds"][i]["groups"][j]["extras"][k]})
 						
-						html_filepath = f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.html"
+						html_filepath = f"{comp_dir}/html/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.html"
 						with open(html_filepath, "w") as f:
 							f.write(output_html)
-						# asyncio.run(html2pdf(html_filepath, f"output/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.pdf"))
+						if gen_pdf:  asyncio.run(html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.pdf"))
 
 
 
@@ -229,7 +211,7 @@ class PyraminxClockSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScram
 		while True:
 			original_scramble = self.scrambler.generate_scramble()
 			scramble = clock_movesub(original_scramble)
-			if self.check_optimal_geq(scramble, depth=6, QTM=False) == True:
+			if self.check_optimal_geq(scramble, depth=self.min_optimal_filter, QTM=False) == True:
 				break
 
 		return original_scramble
@@ -287,7 +269,8 @@ class Cuboid1x3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 		self.event_id = "133_cuboid"
 		self.pdf_type = STANDARD
 		self.puzzle_id = "3x3x3"
-		self.stickering_mask = "EDGES:--------IIII,CENTERS:-IIII-"
+		# self.stickering_mask = "EDGES:--------IIII,CENTERS:-IIII-"
+		self.stickering_mask = ""
 
 		self.num_scrambles = 5
 		self.num_extras = 2
@@ -310,13 +293,15 @@ class Cuboid2x2x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 		self.event_name = "2x3x3"
 		self.event_id = "223_cuboid"
 		self.pdf_type = STANDARD
-		self.puzzle_id = "3x3x3"
-		self.stickering_mask = "EDGES:IIIIIIII----,CENTERS:IIIIII"
+		# self.puzzle_id = "3x3x3"
+		# self.stickering_mask = "EDGES:IIIIIIII----,CENTERS:IIIIII"
+		self.puzzle_id = "4x4x4"
+		self.stickering_mask = ""
 
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/2x2x3.kpuzzle.json", state_file, "U,D,R,F", min_scramble_length=14, min_optimal_filter=7)
+		super().__init__(twips_name, "puzzles/2x2x3.kpuzzle.json", state_file, "U,D,R,F", min_scramble_length=11, min_optimal_filter=7)
 
 	def gen_random_state(self):
 		self.kpuzzle.state_pieces["CORNERS"] = self.kpuzzle.scramble_orbit_pieces("CORNERS", parity_constraint=None, fixed_index=None)
@@ -327,14 +312,19 @@ class Cuboid2x2x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 	def scramble(self):
 		return scramble_move_substitution(self.gen_scramble(), cuboid_move_substitutions)
 
+	def image_move_sub(self, scrambles):
+		return [scramble_move_substitution(s, {"R": "Rw", "F": "Fw"}) for s in scrambles]
+
 class Cuboid2x3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
 
 		self.event_name = "2x3x3"
 		self.event_id = "233_cuboid"
 		self.pdf_type = STANDARD
-		self.puzzle_id = "3x3x3"
-		self.stickering_mask = "EDGES:--------IIII,CENTERS:-IIII-"
+		# self.puzzle_id = "3x3x3"
+		# self.stickering_mask = "EDGES:--------IIII,CENTERS:-IIII-"
+		self.puzzle_id = "4x4x4"
+		self.stickering_mask = ""
 
 		self.num_scrambles = 5
 		self.num_extras = 2
@@ -350,6 +340,9 @@ class Cuboid2x3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 	def scramble(self):
 		return scramble_move_substitution(self.gen_scramble(), cuboid_move_substitutions)
 
+	def image_move_sub(self, scrambles):
+		return [scramble_move_substitution(s, {"U": "Uw"}) for s in scrambles]
+
 class Pentahedron3x2Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
 
@@ -362,7 +355,7 @@ class Pentahedron3x2Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScra
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/2pentahedron.kpuzzle.json", state_file, "U,R,L,F", min_scramble_length=13, min_optimal_filter=7)
+		super().__init__(twips_name, "puzzles/2pentahedron.kpuzzle.json", state_file, "U,R,L,F", min_scramble_length=11, min_optimal_filter=7)
 
 	def gen_random_state(self):
 		self.kpuzzle.state_pieces["CORNERS"] = self.kpuzzle.scramble_orbit_pieces("CORNERS", parity_constraint=None, fixed_index=None)
@@ -385,7 +378,7 @@ class Pentahedron3x3Speedsolving(AbstractRandomStateScramblerTwipsCLI, EventScra
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/3pentahedron.kpuzzle.json", state_file, "U,D,R,L,F", min_scramble_length=13, min_optimal_filter=8)
+		super().__init__(twips_name, "puzzles/3pentahedron.kpuzzle.json", state_file, "U,D,R,L,F", min_scramble_length=11, min_optimal_filter=8)
 
 	def gen_random_state(self):
 		self.kpuzzle.state_pieces["CORNERS"] = self.kpuzzle.scramble_orbit_pieces("CORNERS", parity_constraint=None, fixed_index=None)
@@ -440,7 +433,7 @@ class SuperFloppySpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/super_floppy.kpuzzle.json", state_file, "L,F,R,B", min_scramble_length=13 , min_optimal_filter=7)
+		super().__init__(twips_name, "puzzles/super_floppy.kpuzzle.json", state_file, "L,F,R,B", min_scramble_length=11 , min_optimal_filter=7)
 
 	def gen_random_state(self):
 		self.kpuzzle.state_pieces["EDGES"] = self.kpuzzle.scramble_orbit_pieces("EDGES", parity_constraint=None, fixed_index=None)
@@ -465,7 +458,7 @@ class CornerTurningOctahedronSpeedsolving(AbstractRandomStateScramblerTwipsCLI, 
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/corner_turning_octahedron.kpuzzle.json", state_file, "U,D,L,F,R,B", min_scramble_length=0, min_optimal_filter=0)
+		super().__init__(twips_name, "puzzles/cto.kpuzzle.json", state_file, "U,D,L,F,R,B", min_scramble_length=0, min_optimal_filter=0)
 
 	def gen_random_state(self):
 		self.kpuzzle.state_pieces["EDGES"] = self.kpuzzle.scramble_orbit_pieces("EDGES", parity_constraint=None, fixed_index=None)
@@ -507,9 +500,9 @@ class PyraminxDuoSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 
 		self.event_name = "Pyraminx Duo"
 		self.event_id = "pyram_duo"
-		self.pdf_type = NO_IMAGE
-		self.puzzle_id = None
-		self.stickering_mask = ""
+		self.pdf_type = STANDARD
+		self.puzzle_id = "master_tetraminx"
+		self.stickering_mask = "EDGES:IIIIIIIIIIIIIIIIIIIIIIII,EDGES2:IIIIIIIIIIII"
 
 		self.num_scrambles = 5
 		self.num_extras = 2
@@ -527,6 +520,9 @@ class PyraminxDuoSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambl
 	
 	def scramble(self):
 		return self.gen_scramble()
+	
+	def image_move_sub(self, scrambles):
+		return [s.lower() for s in scrambles]
 
 
 class DinoCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
@@ -541,7 +537,7 @@ class DinoCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
 		self.num_scrambles = 5
 		self.num_extras = 2
 
-		super().__init__(twips_name, "puzzles/dino.kpuzzle.json", state_file, "F,U,UR,UL,R,D", min_scramble_length=14, min_optimal_filter=7)
+		super().__init__(twips_name, "puzzles/dino.kpuzzle.json", state_file, "F,U,UR,UL,R,D", min_scramble_length=11, min_optimal_filter=7)
 
 
 	def gen_random_state(self):
@@ -553,12 +549,12 @@ class DinoCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
 
 		# Check other solution
 		while True:
-			scramble = self.gen_scramble()
-			scramble = "U UL' U UL' U R D' R D' R " + scramble
+			original_scramble = self.gen_scramble()
+			scramble = "U UL' U UL' U R D' R D' R " + original_scramble
 			if self.check_optimal_geq(scramble, depth=self.min_optimal_filter, QTM=False) == True:
 				break
 			
-		return self.scramble
+		return original_scramble
 
 class PyramorphixSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
@@ -601,8 +597,8 @@ class SuperGearCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScram
 
 		self.event_name = "Super Gear Cube"
 		self.event_id = "super_gear_cube"
-		self.pdf_type = NO_IMAGE
-		self.puzzle_id = None
+		self.pdf_type = STANDARD
+		self.puzzle_id = "3x3x3"
 		self.stickering_mask = ""
 
 		self.num_scrambles = 5
@@ -635,19 +631,40 @@ class SuperGearCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScram
 		# self.kpuzzle.write_state_to_file()
 	
 	def scramble(self):
-		rm_scramble = self.random_move.generate_scramble()
 
-		return self.solve_scramble(rm_scramble)
+		while True:
+			rm_scramble = self.random_move.generate_scramble()
+			if self.check_optimal_geq(rm_scramble, depth=self.min_optimal_filter, QTM=False) == True:
+				break
+
+		return self.solve_scramble(rm_scramble, self.min_scramble_length)
 
 		# return self.gen_scramble()
+	
+	def image_move_sub(self, scrambles):
+
+		new_scrambles = []
+		for scramble in scrambles:
+			new_scramble = ""
+
+			for move in scramble.split():
+				base_move, modifier = [move[0], move[1:]]
+				new_scramble += f"{base_move}{modifier} {base_move}w{modifier} "
+			
+			new_scrambles.append(new_scramble.strip())
+		
+		return new_scrambles
+
+
+		
 
 class GearCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
 	def __init__(self, twips_name: str, state_file: str):
 
 		self.event_name = "Gear Cube"
 		self.event_id = "gear_cube"
-		self.pdf_type = NO_IMAGE
-		self.puzzle_id = None
+		self.pdf_type = STANDARD
+		self.puzzle_id = "3x3x3"
 		self.stickering_mask = ""
 
 		self.num_scrambles = 5
@@ -655,7 +672,7 @@ class GearCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
 
 		self.random_move = AbstractRandomMoveScrambler(1000, [["R", "F", "U"]], [["", "2", "3", "4", "5", "6", "5'", "4'", "3'", "2'", "'"]])
 
-		super().__init__(twips_name, "puzzles/gear_cube.kpuzzle.json", state_file, "U,R,F", min_scramble_length=6, min_optimal_filter=4)
+		super().__init__(twips_name, "puzzles/gear_cube.kpuzzle.json", state_file, "U,R,F", min_scramble_length=6, min_optimal_filter=3)
 	
 	# TODO This is wrong, kinda a pain...
 	def gen_random_state(self):
@@ -680,12 +697,28 @@ class GearCubeSpeedsolving(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
 		# self.kpuzzle.write_state_to_file()
 	
 	def scramble(self):
-		rm_scramble = self.random_move.generate_scramble()
+		while True:
+			rm_scramble = self.random_move.generate_scramble()
+			if self.check_optimal_geq(rm_scramble, depth=self.min_optimal_filter, QTM=False) == True:
+				break
 
-		return self.solve_scramble(rm_scramble)
+		return self.solve_scramble(rm_scramble, self.min_scramble_length)
 
 		# return self.gen_scramble()
 
+	def image_move_sub(self, scrambles):
+
+		new_scrambles = []
+		for scramble in scrambles:
+			new_scramble = ""
+
+			for move in scramble.split():
+				base_move, modifier = [move[0], move[1:]]
+				new_scramble += f"{base_move}{modifier} {base_move}w{modifier} "
+			
+			new_scrambles.append(new_scramble.strip())
+		
+		return new_scrambles
 
 #### Multi-Phase Scrambles
 class CornerTurningOctahedronSpeedsolvingTwoPhase(AbstractRandomStateScramblerTwipsCLI, EventScrambleRounds):
@@ -705,18 +738,24 @@ class CornerTurningOctahedronSpeedsolvingTwoPhase(AbstractRandomStateScramblerTw
 		self.phase_1_definition = "puzzles/cto_p1.kpuzzle.json"
 		self.phase_1_generator_moves = "U,D,L,F,R,B"
 
-		super().__init__(twips_name, "puzzles/cto.kpuzzle.json", state_file, "U,R", min_scramble_length=0, min_optimal_filter=0)
+		self.phase_2_generator_moves = "U,R"
+
+		super().__init__(twips_name, "puzzles/cto.kpuzzle.json", state_file, "U,D,L,F,R,B", min_scramble_length=0, min_optimal_filter=2)
 	
 	def gen_random_state(self):
 		pass
 
 	def scramble(self):
 
-		rm_scramble = self.random_move.generate_scramble()
+		while True:
+
+			rm_scramble = self.random_move.generate_scramble()
+			if self.check_optimal_geq(rm_scramble, depth=self.min_optimal_filter, QTM=False) == True:
+				break
 
 		p1 = self.twips.parse_search_moves(self.twips.solve_scramble(self.phase_1_definition, rm_scramble, self.phase_1_generator_moves, 1))
 
-		p2 = self.solve_scramble(f"{rm_scramble} {p1}")
+		p2 = self.twips.parse_search_moves(self.twips.solve_scramble(self.puzzle_file, f"{rm_scramble} {p1}", self.phase_2_generator_moves, 1))
 
 		scramble =  f"{p1} {p2}"
 

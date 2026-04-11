@@ -1,42 +1,34 @@
 {
     "CORNERS": {
         "pieces": [
-            0,
             1,
+            4,
+            7,
             2,
-            3
-        ],
-        "orientation": [
-            1,
-            1,
-            0,
-            2
-        ],
-        "orientationMod": [
-            0,
-            0,
-            0,
+            5,
+            3,
+            6,
             0
-        ]
-    },
-    "CENTERS": {
-        "pieces": [
-            1,
-            2,
-            0,
-            3
         ],
         "orientation": [
+            1,
             0,
             0,
+            0,
+            0,
+            1,
             0,
             0
         ],
         "orientationMod": [
             0,
             0,
+            1,
+            1,
+            1,
             0,
-            0
+            0,
+            1
         ]
     }
 }

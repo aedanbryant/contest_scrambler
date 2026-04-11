@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import optparse
 from datetime import datetime
+import os
 
 from events import *
+
 
 
 def main():
@@ -28,6 +30,10 @@ def main():
     parser.add_option("-x", "--extras",
                     dest="num_extras",
                     type="int")
+    parser.add_option("-p", "--pdf",
+                      action="store_true",
+                      dest="pdf",
+                      default=False)
     
     
 
@@ -52,6 +58,13 @@ def main():
     if len(events) != len(event_groups):
         print("Number of events must match number of event groups")
         return
+
+    # Create competition folder
+    comp_dir = f"output/{options.name}_{timestamp.strftime("%Y%m%d%H%M%S")}"
+    
+    os.mkdir(comp_dir)
+    os.mkdir(f"{comp_dir}/html")
+    if options.pdf: os.mkdir(f"{comp_dir}/pdf")
 
     for i, event in enumerate(events):
 
@@ -113,10 +126,10 @@ def main():
             return
 
         # event_scrambler.scramble_rounds(options.rounds, options.output_file)
-        competition_scrambles["events"].append(event_scrambler.scramble_rounds(groups, options.name, options.num_scrambles, options.num_extras))
+        competition_scrambles["events"].append(event_scrambler.scramble_rounds(groups, options.name, comp_dir, options.num_scrambles, options.num_extras, options.pdf))
 
 
-    with open(f"output/{options.name}_{timestamp.strftime("%Y%m%d%H%M%S")}_.json", "w") as f:
+    with open(f"{comp_dir}/{options.name}_{timestamp.strftime("%Y%m%d%H%M%S")}_.json", "w") as f:
         json.dump(competition_scrambles, f, indent=4)
 
 
