@@ -129,7 +129,7 @@ class Cube4x4x4FewestMoves(EventScrambleRounds):
 		self.num_scrambles = 3
 		self.num_extras = 0
 
-		self.scrambler = AbstractRandomMoveScrambler(45, [[['U','Uw','D'],['F','Fw','B'],['R','Rw','L']]], [["", "'"]])
+		self.scrambler = AbstractRandomMoveScrambler(45, [[['U','Uw','D'],['F','Fw','B'],['R','Rw','L']]], [["", "2", "'"]])
 
 	def scramble(self):
 
