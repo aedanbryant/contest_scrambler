@@ -65,6 +65,7 @@ class EventScrambleRounds:
 						f.write(output_html)
 					
 					if gen_pdf: asyncio.run(html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.pdf"))
+					# html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}.pdf")
 					
 
 
@@ -81,6 +82,7 @@ class EventScrambleRounds:
 						with open(html_filepath, "w") as f:
 							f.write(output_html)
 						if gen_pdf:  asyncio.run(html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.pdf"))
+						# html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.pdf")
 
 					for k in range(num_extras):
 						output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": f"{self.puzzle_id}",
@@ -91,6 +93,7 @@ class EventScrambleRounds:
 						with open(html_filepath, "w") as f:
 							f.write(output_html)
 						if gen_pdf:  asyncio.run(html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.pdf"))
+						# html2pdf(html_filepath, f"{comp_dir}/pdf/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.pdf")
 
 
 

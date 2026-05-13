@@ -29,7 +29,7 @@ Events currently supported:
 | Dino Cube | dino | Yes | 7 | 11 | None |
 | Pyramorphix | pyramorphix | Yes | 5 | 9 | None |
 | Super Gear Cube | super_gear_cube | Pseudo | 4 | 8 | None |
-| Gear Cube | gear_cube | Pseudo | 4 | 6 | None |
+| Gear Cube | gear_cube | Pseudo | 3 | 6 | None |
 | Baby FTO | baby_fto | Yes | 5 | 10 | None |
 | Kilominx | kilominx | Yes | 2 | None | None |
 

@@ -1,24 +1,36 @@
 import re
 import asyncio
 from playwright.async_api import async_playwright
+from playwright.sync_api import sync_playwright, Playwright
 
-sem = asyncio.Semaphore(3)
 
 async def html2pdf(html_filepath, pdf_filepath):
 
 	with open(html_filepath, 'r') as f:
 		html = "".join(f.readlines())
-
+	
+	# async with sem:
 	async with async_playwright() as p:
 		browser = await p.chromium.launch()
 		page = await browser.new_page()
 		await page.set_content(html)
+
+		# Wait for Image to load
+		await page.wait_for_load_state("networkidle", timeout=10000)
+		await page.wait_for_timeout(500)
+		
+		# Scroll to load rest
 		await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+		
+		# Wait for rest of images to load
 		await page.wait_for_load_state("networkidle", timeout=10000) # Wait for Image to load
-		await page.wait_for_timeout(1000)
+		await page.wait_for_timeout(500)
+		
+		# Print
 		await page.emulate_media(media="print")
 		await page.pdf(path=pdf_filepath, format="A4")
 		await browser.close()
+
 
 def cancel_moves(s: str, sym: int):
 	"""
