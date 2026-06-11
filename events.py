@@ -76,7 +76,8 @@ class EventScrambleRounds:
 					for k in range(num_scrambles):
 						output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": f"{self.puzzle_id}",
 											"round": i+1, "group": j+1, "attempt": k+1, "num_attempts": num_scrambles,
-											"scramble": event_scrambles["rounds"][i]["groups"][j]["scrambles"][k]})
+											"scramble": event_scrambles["rounds"][i]["groups"][j]["scrambles"][k],
+											"num_spaces": self.num_spaces})
 						
 						html_filepath = f"{comp_dir}/html/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_a{k+1}.html"
 						with open(html_filepath, "w") as f:
@@ -87,7 +88,8 @@ class EventScrambleRounds:
 					for k in range(num_extras):
 						output_html = template.substitute({"comp_name": comp_name, "event_name": self.event_name, "puzzle_id": f"{self.puzzle_id}",
 											"round": i+1, "group": j+1, "attempt": f"E{k+1}", "num_attempts": num_extras,
-											"scramble": event_scrambles["rounds"][i]["groups"][j]["extras"][k]})
+											"scramble": event_scrambles["rounds"][i]["groups"][j]["extras"][k],
+											"num_spaces": self.num_spaces})
 						
 						html_filepath = f"{comp_dir}/html/{comp_name}_{self.event_id}_r{i+1}_g{j+1}_e{k+1}.html"
 						with open(html_filepath, "w") as f:
@@ -125,6 +127,7 @@ class Cube4x4x4FewestMoves(EventScrambleRounds):
 		self.pdf_type = FMC
 		self.puzzle_id = "4x4x4"
 		self.stickering_mask = ""
+		self.num_spaces = 120
 
 		self.num_scrambles = 3
 		self.num_extras = 0
@@ -154,6 +157,7 @@ class Cube2x2x2FewestMoves(AbstractRandomStateScramblerTwipsCLI, EventScrambleRo
 		self.pdf_type = FMC
 		self.puzzle_id = "2x2x2"
 		self.stickering_mask = ""
+		self.num_spaces = 120
 
 		self.num_scrambles = 5
 		self.num_extras = 0
